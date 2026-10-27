@@ -30,30 +30,58 @@ A modern, full-stack e-commerce platform combining **Next.js 15 frontends** with
 
 ---
 
-## Quick Start
+## Prerequisites
 
-### 1. Start Infrastructure (PostgreSQL, MongoDB, Kafka)
+Before running the project, make sure you have installed:
+- [Docker Desktop](https://www.docker.com/) (running)
+- [Node.js](https://nodejs.org/) (v18+) & [pnpm](https://pnpm.io/) (`npm install -g pnpm`)
+- [Java JDK](https://adoptium.net/) (v17 or v21)
+
+---
+
+## Quick Start (Step-by-Step for New Clones)
+
+### Step 1: Install Frontend Dependencies
+```bash
+# In the root repository folder
+pnpm install
+```
+*(Note: Docker runs PostgreSQL, MongoDB, and Kafka, so `pnpm install` is required for the Next.js apps).*
+
+### Step 2: Configure Environment Variables
+Copy the sample environment files:
+```bash
+cp apps/client/.env.example apps/client/.env.local
+cp apps/admin/.env.example apps/admin/.env.local
+```
+*(Add your Clerk authentication keys in `.env.local` if you wish to test user sign-in).*
+
+### Step 3: Start Databases & Kafka (Docker)
 ```bash
 cd backend
 ./start-services.sh
-# Kafka UI: http://localhost:8080
+# Kafka UI will be available at: http://localhost:8080
 ```
 
-### 2. Run the Java Microservices
+### Step 4: Build & Launch All 5 Java Microservices
 ```bash
 cd backend
-# Build all services
+# 1. Build all services (Maven will automatically download dependencies)
 ./mvnw clean package -DskipTests
 
-# Run any service (e.g. Product Service on 8000)
-cd product-service && ../mvnw spring-boot:run
+# 2. Start all 5 microservices in the background (Product, Order, Payment, Auth, Email)
+./start-apps.sh
+
+# To stop all services at any time:
+# ./stop-apps.sh
 ```
 
-### 3. Run the Frontend Applications
+### Step 5: Start the Frontends
+From the project root:
 ```bash
-# Run Client Storefront (Port 3002)
+# Terminal 1: Client Storefront (http://localhost:3002)
 pnpm --filter client dev
 
-# Run Admin Dashboard (Port 3003)
+# Terminal 2: Admin Dashboard (http://localhost:3003)
 pnpm --filter admin dev
 ```
