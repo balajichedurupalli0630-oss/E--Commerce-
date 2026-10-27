@@ -1,4 +1,4 @@
-import type { Product } from "@repo/product-db";
+import type { Product } from "./product.js";
 import z from "zod";
 
 export type CartItemType = Product & {

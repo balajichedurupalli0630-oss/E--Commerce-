@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trendlama - Best Clothes",
-  description: "Trendlama is the best place to find the best clothes",
+  title: "OmniCart - Shop Everything You Need",
+  description: "OmniCart is your premier destination for shopping high-quality products",
 };
 
 export default function RootLayout({

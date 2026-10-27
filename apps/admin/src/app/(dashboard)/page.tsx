@@ -9,13 +9,14 @@ const Homepage = async () => {
   const { getToken } = await auth();
   const token = await getToken();
   const orderChartData = fetch(
-    `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/order-chart`,
+    `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL || "http://localhost:8001"}/order-chart`,
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      cache: "no-store",
     }
-  );
+  )
+    .then((res) => (res.ok ? res.json() : []))
+    .catch(() => []);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4">
       <div className="bg-primary-foreground p-4 rounded-lg lg:col-span-2 xl:col-span-1 2xl:col-span-2">

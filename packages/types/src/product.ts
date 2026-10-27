@@ -1,5 +1,25 @@
-import type { Product, Category } from "@repo/product-db";
 import z from "zod";
+
+export type Category = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
+export type Product = {
+  id: number;
+  name: string;
+  shortDescription: string;
+  description: string;
+  price: number;
+  sizes: string[];
+  colors: string[];
+  images: Record<string, string>;
+  categorySlug: string;
+  category?: Category;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+};
 
 export type ProductType = Product;
 
@@ -25,6 +45,27 @@ export const colors = [
   "white",
 ] as const;
 
+export const clothingSizes = [
+  "xs",
+  "s",
+  "m",
+  "l",
+  "xl",
+  "xxl",
+  "3xl",
+] as const;
+
+export const shoeSizes = [
+  "UK 5",
+  "UK 6",
+  "UK 7",
+  "UK 8",
+  "UK 9",
+  "UK 10",
+  "UK 11",
+  "UK 12",
+] as const;
+
 export const sizes = [
   "xs",
   "s",
@@ -32,6 +73,22 @@ export const sizes = [
   "l",
   "xl",
   "xxl",
+  "3xl",
+  "UK 5",
+  "UK 6",
+  "UK 7",
+  "UK 8",
+  "UK 9",
+  "UK 10",
+  "UK 11",
+  "UK 12",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
   "34",
   "35",
   "36",

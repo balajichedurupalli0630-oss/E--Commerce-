@@ -36,3 +36,16 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Java / Maven / Backend
+target/
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+backend/logs/
+*.log
+*.pid
+.idea/
+*.iml

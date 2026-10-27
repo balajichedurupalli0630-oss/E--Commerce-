@@ -129,19 +129,25 @@ const CardList = async ({ title }: { title: string }) => {
   const { getToken } = await auth();
   const token = await getToken();
 
-  if (title === "Popular Products") {
-    products = await fetch(
-      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/products?limit=5&popular=true`
-    ).then((res) => res.json());
-  } else {
-    orders = await fetch(
-      `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/orders?limit=5`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    ).then((res) => res.json());
+  try {
+    if (title === "Popular Products") {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL || "http://localhost:8000"}/products?limit=5`,
+        { cache: "no-store" }
+      );
+      products = res.ok ? await res.json() : [];
+    } else {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL || "http://localhost:8001"}/orders?limit=5`,
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          cache: "no-store",
+        }
+      );
+      orders = res.ok ? await res.json() : [];
+    }
+  } catch (err) {
+    console.error("CardList fetch error:", err);
   }
 
   return (
@@ -157,8 +163,9 @@ const CardList = async ({ title }: { title: string }) => {
                 <div className="w-12 h-12 rounded-sm relative overflow-hidden">
                   <Image
                     src={
-                      Object.values(item.images as Record<string, string>)[0] ||
-                      ""
+                      (item.images &&
+                        Object.values(item.images as Record<string, string>)[0]) ||
+                      "/products/1g.png"
                     }
                     alt={item.name}
                     fill
@@ -170,7 +177,7 @@ const CardList = async ({ title }: { title: string }) => {
                     {item.name}
                   </CardTitle>
                 </CardContent>
-                <CardFooter className="p-0">${item.price}K</CardFooter>
+                <CardFooter className="p-0">₹{item.price}</CardFooter>
               </Card>
             ))
           : orders.map((item) => (
@@ -184,7 +191,7 @@ const CardList = async ({ title }: { title: string }) => {
                   </CardTitle>
                   <Badge variant="secondary">{item.status}</Badge>
                 </CardContent>
-                <CardFooter className="p-0">${item.amount / 100}</CardFooter>
+                <CardFooter className="p-0">₹{(item.amount / 100).toFixed(2)}</CardFooter>
               </Card>
             ))}
       </div>

@@ -52,14 +52,16 @@ export const columns: ColumnDef<ProductType>[] = [
     header: "Image",
     cell: ({ row }) => {
       const product = row.original;
+      const images = (product.images as Record<string, string>) || {};
+      const firstColor = product.colors?.[0];
+      const imgSrc =
+        (firstColor && images[firstColor]) ||
+        Object.values(images)[0] ||
+        "/products/1g.png";
       return (
         <div className="w-9 h-9 relative">
           <Image
-            src={
-              (product.images as Record<string, string>)?.[
-                product.colors[0] || ""
-              ] || ""
-            }
+            src={imgSrc}
             alt={product.name}
             fill
             className="rounded-full object-cover"
@@ -84,6 +86,10 @@ export const columns: ColumnDef<ProductType>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const price = parseFloat(row.getValue("price"));
+      return <div>₹{price.toFixed(2)}</div>;
     },
   },
   {

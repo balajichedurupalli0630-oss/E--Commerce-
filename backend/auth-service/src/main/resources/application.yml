@@ -1,0 +1,15 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: auth-service
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094,localhost:9095,localhost:9096}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+clerk:
+  secret:
+    key: ${CLERK_SECRET_KEY:}

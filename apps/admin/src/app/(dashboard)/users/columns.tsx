@@ -49,10 +49,14 @@ export const columns: ColumnDef<User>[] = [
     header: "Avatar",
     cell: ({ row }) => {
       const user = row.original;
+      const avatarSrc =
+        user.imageUrl && user.imageUrl.trim() !== ""
+          ? user.imageUrl
+          : "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=800";
       return (
         <div className="w-9 h-9 relative">
           <Image
-            src={user.imageUrl}
+            src={avatarSrc}
             alt={user.firstName || user.username || "-"}
             fill
             className="rounded-full object-cover"

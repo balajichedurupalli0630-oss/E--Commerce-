@@ -30,10 +30,18 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
 import { ScrollArea } from "./ui/scroll-area";
-import { CategoryType, colors, ProductFormSchema, sizes } from "@repo/types";
+import {
+  CategoryType,
+  clothingSizes,
+  colors,
+  ProductFormSchema,
+  shoeSizes,
+  sizes,
+} from "@repo/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 // const categories = [
 //   "T-shirts",
@@ -78,6 +86,7 @@ const AddProduct = () => {
   });
 
   const { getToken } = useAuth();
+  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof ProductFormSchema>) => {
@@ -99,6 +108,7 @@ const AddProduct = () => {
     },
     onSuccess: () => {
       toast.success("Product created successfully");
+      router.refresh();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -169,18 +179,21 @@ const AddProduct = () => {
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Price</FormLabel>
+                      <FormLabel>Price (₹)</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
-                          {...field}
+                          placeholder="e.g. 2999"
+                          value={field.value === 0 ? "" : field.value}
                           onChange={(e) =>
-                            field.onChange(Number(e.target.value))
+                            field.onChange(
+                              e.target.value === "" ? 0 : Number(e.target.value)
+                            )
                           }
                         />
                       </FormControl>
                       <FormDescription>
-                        Enter the price of the product.
+                        Enter the price of the product in Rupees (₹).
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -194,7 +207,13 @@ const AddProduct = () => {
                       <FormItem>
                         <FormLabel>Category</FormLabel>
                         <FormControl>
-                          <Select onValueChange={field.onChange} value={field.value}>
+                          <Select
+                            onValueChange={(val) => {
+                              field.onChange(val);
+                              form.setValue("sizes", []);
+                            }}
+                            value={field.value}
+                          >
                             <SelectTrigger>
                               <SelectValue placeholder="Select a category" />
                             </SelectTrigger>
@@ -218,40 +237,64 @@ const AddProduct = () => {
                 <FormField
                   control={form.control}
                   name="sizes"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Sizes</FormLabel>
-                      <FormControl>
-                        <div className="grid grid-cols-3 gap-4 my-2">
-                          {sizes.map((size) => (
-                            <div className="flex items-center gap-2" key={size}>
-                              <Checkbox
-                                id="size"
-                                checked={field.value?.includes(size)}
-                                onCheckedChange={(checked) => {
-                                  const currentValues = field.value || [];
-                                  if (checked) {
-                                    field.onChange([...currentValues, size]);
-                                  } else {
-                                    field.onChange(
-                                      currentValues.filter((v) => v !== size)
-                                    );
-                                  }
-                                }}
-                              />
-                              <label htmlFor="size" className="text-xs">
-                                {size}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </FormControl>
-                      <FormDescription>
-                        Select the available sizes for the product.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const selectedCategory = form.watch("categorySlug") || "";
+                    const isShoes =
+                      selectedCategory.toLowerCase().includes("shoe") ||
+                      selectedCategory.toLowerCase().includes("footwear") ||
+                      selectedCategory.toLowerCase().includes("sneaker") ||
+                      selectedCategory.toLowerCase().includes("boot");
+
+                    const availableSizes = isShoes ? shoeSizes : clothingSizes;
+
+                    return (
+                      <FormItem>
+                        <FormLabel>
+                          Sizes{" "}
+                          {isShoes
+                            ? "(UK / India Shoe Sizes)"
+                            : "(Clothing Sizes)"}
+                        </FormLabel>
+                        <FormControl>
+                          <div className="grid grid-cols-3 gap-4 my-2">
+                            {availableSizes.map((size) => (
+                              <div
+                                className="flex items-center gap-2"
+                                key={size}
+                              >
+                                <Checkbox
+                                  id={`size-${size.replace(/\s+/g, "_")}`}
+                                  checked={field.value?.includes(size)}
+                                  onCheckedChange={(checked) => {
+                                    const currentValues = field.value || [];
+                                    if (checked) {
+                                      field.onChange([...currentValues, size]);
+                                    } else {
+                                      field.onChange(
+                                        currentValues.filter((v) => v !== size)
+                                      );
+                                    }
+                                  }}
+                                />
+                                <label
+                                  htmlFor={`size-${size.replace(/\s+/g, "_")}`}
+                                  className="text-xs uppercase font-medium cursor-pointer"
+                                >
+                                  {size}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </FormControl>
+                        <FormDescription>
+                          {isShoes
+                            ? "Select UK / India standard shoe sizes (UK 5 to UK 12)."
+                            : "Select apparel sizes (XS to 3XL)."}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
                 <FormField
                   control={form.control}
@@ -268,7 +311,7 @@ const AddProduct = () => {
                                 key={color}
                               >
                                 <Checkbox
-                                  id="color"
+                                  id={`color-${color}`}
                                   checked={field.value?.includes(color)}
                                   onCheckedChange={(checked) => {
                                     const currentValues = field.value || [];
@@ -282,11 +325,11 @@ const AddProduct = () => {
                                   }}
                                 />
                                 <label
-                                  htmlFor="color"
-                                  className="text-xs flex items-center gap-2"
+                                  htmlFor={`color-${color}`}
+                                  className="text-xs flex items-center gap-2 cursor-pointer capitalize"
                                 >
                                   <div
-                                    className="w-2 h-2 rounded-full"
+                                    className="w-2 h-2 rounded-full border border-gray-300"
                                     style={{ backgroundColor: color }}
                                   />
                                   {color}
@@ -331,35 +374,67 @@ const AddProduct = () => {
                                 onChange={async (e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
-                                    try {
-                                      const formData = new FormData();
-                                      formData.append("file", file);
-                                      formData.append(
-                                        "upload_preset",
-                                        "ecommerce"
-                                      );
+                                    const cloudName =
+                                      process.env
+                                        .NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+                                    const hasCloudinary =
+                                      cloudName &&
+                                      cloudName !== "your_cloud_name";
 
-                                      const res = await fetch(
-                                        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                                        {
-                                          method: "POST",
-                                          body: formData,
+                                    if (hasCloudinary) {
+                                      try {
+                                        const formData = new FormData();
+                                        formData.append("file", file);
+                                        formData.append(
+                                          "upload_preset",
+                                          "ecommerce"
+                                        );
+
+                                        const res = await fetch(
+                                          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                                          {
+                                            method: "POST",
+                                            body: formData,
+                                          }
+                                        );
+                                        const data = await res.json();
+
+                                        if (data.secure_url) {
+                                          const currentImages =
+                                            form.getValues("images") || {};
+                                          form.setValue("images", {
+                                            ...currentImages,
+                                            [color]: data.secure_url,
+                                          });
+                                          toast.success(
+                                            `Image uploaded for ${color}`
+                                          );
+                                          return;
                                         }
-                                      );
-                                      const data = await res.json();
-
-                                      if (data.secure_url) {
-                                        const currentImages =
-                                          form.getValues("images") || {};
-                                        form.setValue("images", {
-                                          ...currentImages,
-                                          [color]: data.secure_url,
-                                        });
+                                      } catch (error) {
+                                        console.log(
+                                          "Cloudinary error, falling back to local base64:",
+                                          error
+                                        );
                                       }
-                                    } catch (error) {
-                                      console.log(error);
-                                      toast.error("Upload failed!");
                                     }
+
+                                    // Fallback: Read file as Base64 Data URL (works immediately locally)
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                      const base64String =
+                                        reader.result as string;
+                                      const currentImages =
+                                        form.getValues("images") || {};
+                                      form.setValue("images", {
+                                        ...currentImages,
+                                        [color]: base64String,
+                                      });
+                                      toast.success(
+                                        `Image selected for ${color}`
+                                      );
+                                    };
+                                    reader.readAsDataURL(file);
                                   }
                                 }}
                               />
