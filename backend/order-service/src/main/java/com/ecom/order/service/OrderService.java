@@ -78,6 +78,30 @@ public class OrderService {
         return toDTO(saved);
     }
 
+    public OrderDTO saveOrder(OrderDTO dto) {
+        Order order = Order.builder()
+                .userId(dto.getUserId())
+                .email(dto.getEmail())
+                .amount(dto.getAmount())
+                .status(dto.getStatus() != null ? dto.getStatus() : "success")
+                .products(dto.getProducts() != null ? dto.getProducts() : new ArrayList<>())
+                .createdAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now())
+                .updatedAt(Instant.now())
+                .build();
+        Order saved = orderRepository.save(order);
+        log.info("Saved REST order {} for user {}", saved.getId(), saved.getUserId());
+        return toDTO(saved);
+    }
+
+    public OrderDTO cancelOrder(String orderId) {
+        return orderRepository.findById(orderId).map(order -> {
+            order.setStatus("cancelled");
+            order.setUpdatedAt(Instant.now());
+            Order saved = orderRepository.save(order);
+            log.info("Cancelled order {}", orderId);
+            return toDTO(saved);
+        }).orElse(null);}
+
     public List<OrderChartDTO> getOrderChart() {
         LocalDate now = LocalDate.now(ZoneOffset.UTC);
         YearMonth currentMonth = YearMonth.from(now);

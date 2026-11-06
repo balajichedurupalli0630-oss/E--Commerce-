@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.admin.AdminDashboardController"
+      spacing="24">
+
+    <!-- TOP SECTION: REVENUE CHART & LATEST TRANSACTIONS -->
+    <HBox spacing="20">
+        <!-- TOTAL REVENUE BAR CHART -->
+        <VBox styleClass="admin-card" HBox.hgrow="ALWAYS" prefHeight="340">
+            <Label text="Total Revenue &amp; Orders" styleClass="admin-card-header"/>
+            <BarChart fx:id="revenueBarChart" animated="false" legendVisible="true" VBox.vgrow="ALWAYS">
+                <xAxis>
+                    <CategoryAxis fx:id="revenueXAxis"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis fx:id="revenueYAxis"/>
+                </yAxis>
+            </BarChart>
+        </VBox>
+
+        <!-- LATEST TRANSACTIONS -->
+        <VBox styleClass="admin-card" prefWidth="380" spacing="14">
+            <Label text="Latest Transactions" styleClass="admin-card-header"/>
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" prefHeight="260">
+                <VBox fx:id="latestTransactionsList" spacing="10"/>
+            </ScrollPane>
+        </VBox>
+    </HBox>
+
+    <!-- MIDDLE SECTION: PIE CHART & TODO LIST -->
+    <HBox spacing="20">
+        <!-- BROWSER USAGE PIE CHART -->
+        <VBox styleClass="admin-card" prefWidth="480" prefHeight="320">
+            <Label text="Browser Usage" styleClass="admin-card-header"/>
+            <PieChart fx:id="browserPieChart" legendVisible="true" VBox.vgrow="ALWAYS"/>
+        </VBox>
+
+        <!-- TODO LIST -->
+        <VBox styleClass="admin-card" HBox.hgrow="ALWAYS" spacing="14" prefHeight="320">
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Operational Tasks" styleClass="admin-card-header"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <DatePicker fx:id="todoDatePicker" prefWidth="160"/>
+            </HBox>
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                <VBox fx:id="todoItemsBox" spacing="10"/>
+            </ScrollPane>
+        </VBox>
+    </HBox>
+
+    <!-- BOTTOM SECTION: VISITORS AREA CHART & POPULAR PRODUCTS -->
+    <HBox spacing="20">
+        <!-- VISITORS AREA CHART -->
+        <VBox styleClass="admin-card" HBox.hgrow="ALWAYS" prefHeight="340">
+            <Label text="Total Traffic (Desktop vs. Mobile)" styleClass="admin-card-header"/>
+            <AreaChart fx:id="visitorsAreaChart" animated="false" legendVisible="true" VBox.vgrow="ALWAYS">
+                <xAxis>
+                    <CategoryAxis fx:id="visitorsXAxis"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis fx:id="visitorsYAxis"/>
+                </yAxis>
+            </AreaChart>
+        </VBox>
+
+        <!-- POPULAR PRODUCTS -->
+        <VBox styleClass="admin-card" prefWidth="380" spacing="14">
+            <Label text="Popular Products" styleClass="admin-card-header"/>
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" prefHeight="260">
+                <VBox fx:id="popularProductsList" spacing="10"/>
+            </ScrollPane>
+        </VBox>
+    </HBox>
+
+</VBox>

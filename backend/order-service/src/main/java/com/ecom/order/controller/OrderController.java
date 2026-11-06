@@ -54,6 +54,20 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrders(limit));
     }
 
+    @PostMapping("/orders")
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO dto) {
+        return ResponseEntity.ok(orderService.saveOrder(dto));
+    }
+
+    @PutMapping("/orders/{id}/cancel")
+    public ResponseEntity<OrderDTO> cancelOrder(@PathVariable String id) {
+        OrderDTO order = orderService.cancelOrder(id);
+        if (order == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(order);
+    }
+
     @GetMapping("/order-chart")
     public ResponseEntity<List<OrderChartDTO>> getOrderChart() {
         return ResponseEntity.ok(orderService.getOrderChart());

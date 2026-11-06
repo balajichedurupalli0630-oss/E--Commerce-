@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.OrdersController"
+      spacing="20" alignment="TOP_CENTER" style="-fx-padding: 20px 0;">
+
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Your Orders" style="-fx-font-size: 22px; -fx-font-weight: 600; -fx-text-fill: #111827;"/>
+    </HBox>
+
+    <VBox fx:id="loadingBox" alignment="CENTER" spacing="12" prefHeight="180" visible="false" managed="false">
+        <ProgressIndicator prefWidth="32" prefHeight="32"/>
+        <Label text="Fetching your orders..." style="-fx-text-fill: #6b7280; -fx-font-size: 13px;"/>
+    </VBox>
+
+    <Label fx:id="emptyOrdersLabel" text="No orders found. Once you place an order, it will appear here."
+           visible="false" managed="false" style="-fx-text-fill: #6b7280; -fx-font-size: 14px; -fx-padding: 40px;"/>
+
+    <TableView fx:id="ordersTable" prefHeight="480">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ORDER ID" prefWidth="180"/>
+            <TableColumn fx:id="totalColumn" text="TOTAL" prefWidth="120"/>
+            <TableColumn fx:id="statusColumn" text="STATUS" prefWidth="120"/>
+            <TableColumn fx:id="dateColumn" text="DATE" prefWidth="140"/>
+            <TableColumn fx:id="productsColumn" text="PRODUCTS" prefWidth="480"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+
+</VBox>

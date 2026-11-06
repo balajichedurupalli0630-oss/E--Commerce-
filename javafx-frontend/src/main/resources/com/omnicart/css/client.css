@@ -1,0 +1,357 @@
+/* OmniCart Customer Storefront Styling */
+.client-root {
+    -fx-background-color: #ffffff;
+}
+
+.client-container {
+    -fx-max-width: 1152px;
+    -fx-padding: 16px 24px;
+}
+
+/* Navbar */
+.navbar {
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 12px 0 18px 0;
+}
+
+.brand-text {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+    -fx-letter-spacing: 0.05em;
+}
+
+.navbar-search-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 3px 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 4, 0, 0, 1);
+}
+.navbar-search-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 4px 6px;
+    -fx-font-size: 13px;
+    -fx-prompt-text-fill: #9ca3af;
+}
+
+.icon-btn-transparent {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 6px;
+    -fx-background-radius: 6px;
+}
+.icon-btn-transparent:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.cart-icon-container {
+    -fx-cursor: hand;
+}
+.cart-badge {
+    -fx-background-color: #fbbf24;
+    -fx-text-fill: #4b5563;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-min-width: 18px;
+    -fx-min-height: 18px;
+    -fx-alignment: center;
+    -fx-padding: 1px 4px;
+}
+
+.btn-sign-in {
+    -fx-background-color: #111827;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 500;
+    -fx-font-size: 13px;
+    -fx-padding: 6px 14px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+.btn-sign-in:hover {
+    -fx-background-color: #000000;
+}
+
+.btn-admin-portal {
+    -fx-background-color: #ede9fe;
+    -fx-text-fill: #5b21b6;
+    -fx-font-weight: 600;
+    -fx-font-size: 12px;
+    -fx-padding: 6px 12px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+.btn-admin-portal:hover {
+    -fx-background-color: #ddd6fe;
+}
+
+.user-menu-btn {
+    -fx-background-color: #f3f4f6;
+    -fx-text-fill: #1f2937;
+    -fx-font-weight: 500;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6px;
+    -fx-padding: 4px 10px;
+    -fx-cursor: hand;
+}
+
+/* Hero Banner */
+.hero-banner-container {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+
+/* Category Pills Bar */
+.categories-container {
+    -fx-background-color: #f3f4f6;
+    -fx-background-radius: 8px;
+    -fx-padding: 6px;
+}
+
+.category-pill {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-padding: 6px 14px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+.category-pill:hover {
+    -fx-text-fill: #111827;
+}
+.category-pill-active {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #111827;
+    -fx-font-weight: 600;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 6, 0, 0, 2);
+}
+
+/* Product Card */
+.product-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-color: #f3f4f6;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);
+}
+.product-card-image-box {
+    -fx-background-color: #fafafa;
+    -fx-background-radius: 10px 10px 0 0;
+}
+.product-card-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #111827;
+}
+.product-card-description {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+.product-card-meta-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9ca3af;
+}
+.product-card-combo {
+    -fx-font-size: 11px;
+    -fx-padding: 2px 4px;
+    -fx-pref-width: 65px;
+}
+.product-card-price {
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #111827;
+}
+.btn-add-cart {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #1f2937;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 4, 0, 0, 1);
+}
+.btn-add-cart:hover {
+    -fx-background-color: #111827;
+    -fx-text-fill: #ffffff;
+}
+
+/* Product Details View */
+.details-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #111827;
+}
+.details-desc {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6b7280;
+    -fx-line-spacing: 4px;
+}
+.details-price {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+.size-box-btn {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1px;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #1f2937;
+    -fx-min-width: 38px;
+    -fx-min-height: 38px;
+    -fx-cursor: hand;
+}
+.size-box-btn-active {
+    -fx-background-color: #111827;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #111827;
+}
+.btn-primary-dark {
+    -fx-background-color: #1f2937;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+.btn-primary-dark:hover {
+    -fx-background-color: #111827;
+}
+.btn-secondary-outline {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+.btn-secondary-outline:hover {
+    -fx-background-color: #f9fafb;
+}
+
+/* Cart & Wizard */
+.wizard-step-box {
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-padding: 0 0 8px 0;
+}
+.step-active {
+    -fx-border-color: transparent transparent #1f2937 transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+.step-inactive {
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.step-circle-active {
+    -fx-background-color: #1f2937;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-min-width: 26px;
+    -fx-min-height: 26px;
+    -fx-background-radius: 13px;
+    -fx-alignment: center;
+}
+.step-circle-inactive {
+    -fx-background-color: #9ca3af;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-min-width: 26px;
+    -fx-min-height: 26px;
+    -fx-background-radius: 13px;
+    -fx-alignment: center;
+}
+
+.cart-card-container {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #f3f4f6;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 24px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 10, 0, 0, 3);
+}
+
+.cart-item-row {
+    -fx-border-color: transparent transparent #f3f4f6 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+.cart-thumb-box {
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 8px;
+}
+.cart-item-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #111827;
+}
+.cart-item-meta {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+.qty-btn {
+    -fx-background-color: #f3f4f6;
+    -fx-font-weight: bold;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-padding: 2px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+.qty-text {
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-padding: 0 4px;
+}
+.cart-item-price {
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #111827;
+}
+.btn-trash {
+    -fx-background-color: #fee2e2;
+    -fx-background-radius: 16px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-cursor: hand;
+}
+.btn-trash:hover {
+    -fx-background-color: #fecaca;
+}
+
+/* Footer */
+.footer-container {
+    -fx-background-color: #1f2937;
+    -fx-background-radius: 12px;
+    -fx-padding: 32px;
+}
+.footer-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #fef3c7;
+}
+.footer-link {
+    -fx-font-size: 13px;
+    -fx-text-fill: #9ca3af;
+    -fx-cursor: hand;
+}
+.footer-link:hover {
+    -fx-text-fill: #ffffff;
+}

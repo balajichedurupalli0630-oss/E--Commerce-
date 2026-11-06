@@ -120,6 +120,24 @@ export const columns: ColumnDef<OrderType>[] = [
               <Link href={`/users/${order.userId}`}>View customer</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>View order details</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="text-red-600 focus:text-red-600 cursor-pointer"
+              onClick={async () => {
+                if (window.confirm(Are you sure you want to cancel order ${order._id}?)) {
+                  try {
+                    await fetch(${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL || "http://localhost:8001"}/orders//cancel, {
+                      method: "PUT",
+                    });
+                    window.location.reload();
+                  } catch (e) {
+                    console.error("Cancel order failed", e);
+                  }
+                }
+              }}
+            >
+              Cancel order
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.ProductDetailsController"
+      spacing="48" alignment="TOP_CENTER" style="-fx-padding: 30px 10px;">
+
+    <!-- LEFT: PRODUCT IMAGE GALLERY -->
+    <StackPane prefWidth="420" prefHeight="540" style="-fx-background-color: #fafafa; -fx-background-radius: 12px; -fx-border-color: #f3f4f6; -fx-border-radius: 12px;" alignment="CENTER">
+        <ImageView fx:id="productImageView" fitWidth="380" fitHeight="480" preserveRatio="true"/>
+    </StackPane>
+
+    <!-- RIGHT: PRODUCT INTERACTION DETAILS -->
+    <VBox spacing="18" prefWidth="540" alignment="TOP_LEFT">
+        <Label fx:id="titleLabel" text="Product Title" styleClass="details-title" wrapText="true"/>
+        <Label fx:id="descriptionLabel" text="Description..." styleClass="details-desc" wrapText="true"/>
+        <Label fx:id="priceLabel" text="₹0.00" styleClass="details-price"/>
+
+        <Separator style="-fx-padding: 4px 0;"/>
+
+        <!-- SIZES -->
+        <VBox spacing="6">
+            <Label text="Select Size" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+            <HBox fx:id="sizesContainer" spacing="8" alignment="CENTER_LEFT"/>
+        </VBox>
+
+        <!-- COLORS -->
+        <VBox spacing="6">
+            <Label text="Select Color" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+            <HBox fx:id="colorsContainer" spacing="10" alignment="CENTER_LEFT"/>
+        </VBox>
+
+        <!-- QUANTITY -->
+        <VBox spacing="6">
+            <Label text="Quantity" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="decrementBtn" onAction="#onDecrement" styleClass="qty-btn" prefWidth="30" prefHeight="30"/>
+                <Label fx:id="quantityLabel" text="1" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-padding: 0 6px;"/>
+                <Button fx:id="incrementBtn" onAction="#onIncrement" styleClass="qty-btn" prefWidth="30" prefHeight="30"/>
+            </HBox>
+        </VBox>
+
+        <!-- ACTION BUTTONS -->
+        <VBox spacing="12" style="-fx-padding: 10px 0 0 0;">
+            <Button fx:id="addToCartBtn" text="Add to Cart" onAction="#onAddToCart" maxWidth="Infinity" styleClass="btn-primary-dark"/>
+            <Button fx:id="buyNowBtn" text="Buy this Item" onAction="#onBuyNow" maxWidth="Infinity" styleClass="btn-secondary-outline"/>
+        </VBox>
+
+        <!-- PAYMENT PROVIDERS LOGOS -->
+        <HBox spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 8px 0 0 0;">
+            <ImageView fx:id="klarnaImageView" fitWidth="50" fitHeight="26" preserveRatio="true"/>
+            <ImageView fx:id="cardsImageView" fitWidth="50" fitHeight="26" preserveRatio="true"/>
+            <ImageView fx:id="stripeImageView" fitWidth="50" fitHeight="26" preserveRatio="true"/>
+        </HBox>
+
+        <!-- POLICIES DISCLAIMER -->
+        <Label text="By clicking Pay Now, you agree to our Terms &amp; Conditions and Privacy Policy. You authorize us to charge your selected payment method for the total amount shown. All sales are subject to our return and Refund Policies."
+               wrapText="true" style="-fx-font-size: 11px; -fx-text-fill: #9ca3af; -fx-line-spacing: 2px;"/>
+    </VBox>
+
+</HBox>

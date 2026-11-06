@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.ReturnController"
+      alignment="CENTER" spacing="16" style="-fx-padding: 40px 0;">
+
+    <VBox alignment="CENTER" spacing="18" prefWidth="480" maxWidth="520" styleClass="cart-card-container">
+        <!-- GREEN CHECKMARK ICON CONTAINER -->
+        <StackPane fx:id="checkmarkCircle" prefWidth="64" prefHeight="64" alignment="CENTER"
+                   style="-fx-background-color: #ecfdf5; -fx-background-radius: 32px; -fx-max-width: 64px; -fx-max-height: 64px;"/>
+
+        <Label fx:id="titleLabel" text="Payment Successful!" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+        <Label text="Thank you for your purchase. Your order has been recorded and is currently being processed."
+               wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #6b7280; -fx-font-size: 13px; -fx-max-width: 380px;"/>
+
+        <!-- ORDER SESSION DETAILS -->
+        <VBox spacing="8" style="-fx-background-color: #f9fafb; -fx-background-radius: 8px; -fx-padding: 14px;" maxWidth="Infinity">
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Session ID:" style="-fx-text-fill: #6b7280; -fx-font-size: 12px;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="sessionIdLabel" text="-" style="-fx-font-family: monospace; -fx-font-size: 12px; -fx-text-fill: #111827;"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Payment Status:" style="-fx-text-fill: #6b7280; -fx-font-size: 12px;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="paymentStatusLabel" text="Paid" style="-fx-text-fill: #059669; -fx-font-weight: 600; -fx-font-size: 12px;"/>
+            </HBox>
+        </VBox>
+
+        <!-- BUTTONS -->
+        <HBox spacing="14" alignment="CENTER" maxWidth="Infinity" style="-fx-padding: 10px 0 0 0;">
+            <Button fx:id="viewOrdersBtn" text="View Your Orders" onAction="#onViewOrders" styleClass="btn-primary-dark" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="42"/>
+            <Button fx:id="continueShoppingBtn" text="Continue Shopping" onAction="#onContinueShopping" styleClass="btn-secondary-outline" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="42"/>
+        </HBox>
+    </VBox>
+
+</VBox>
