@@ -81,10 +81,6 @@ public class Product {
      */
     public double getEffectivePrice() {
         if (price == null) return 0.0;
-        // Prices are set in thousands (e.g. ₹3,990.00); scale up if smaller decimal value was provided
-        if (price > 0 && price < 500) {
-            return price * 100.0;
-        }
         return price;
     }
 
