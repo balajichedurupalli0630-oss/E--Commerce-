@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.admin.AdminUsersController"
+      spacing="20">
+
+    <!-- HEADER & ACTIONS BAR -->
+    <HBox alignment="CENTER_LEFT" spacing="16">
+        <VBox spacing="2">
+            <Label text="Users &amp; Roles Directory" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+            <Label text="Manage user accounts, roles, access levels and permissions" style="-fx-font-size: 13px; -fx-text-fill: #64748b;"/>
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <TextField fx:id="searchField" promptText="Search users..." prefWidth="240" styleClass="text-field"/>
+        <Button fx:id="addUserBtn" text="Add User" onAction="#onAddUser" styleClass="btn-primary-dark"/>
+    </HBox>
+
+    <!-- USERS TABLE -->
+    <TableView fx:id="usersTable" prefHeight="580" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="selectColumn" text="" prefWidth="40" resizable="false"/>
+            <TableColumn fx:id="avatarColumn" text="AVATAR" prefWidth="70" resizable="false"/>
+            <TableColumn fx:id="nameColumn" text="FULL NAME" prefWidth="220"/>
+            <TableColumn fx:id="emailColumn" text="EMAIL" prefWidth="260"/>
+            <TableColumn fx:id="roleColumn" text="ROLE" prefWidth="120"/>
+            <TableColumn fx:id="statusColumn" text="STATUS" prefWidth="120"/>
+            <TableColumn fx:id="actionsColumn" text="ACTIONS" prefWidth="110" resizable="false"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+
+</VBox>

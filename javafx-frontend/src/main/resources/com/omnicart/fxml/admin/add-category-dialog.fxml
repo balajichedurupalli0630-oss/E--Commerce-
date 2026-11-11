@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.admin.AddCategoryDialogController"
+      prefWidth="400" prefHeight="280" spacing="16" style="-fx-background-color: #ffffff; -fx-padding: 24px;">
+
+    <Label text="Add New Category" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+
+    <VBox spacing="14" VBox.vgrow="ALWAYS">
+        <VBox spacing="4">
+            <Label text="Category Name *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+            <TextField fx:id="nameField" promptText="e.g. Watches"/>
+        </VBox>
+
+        <VBox spacing="4">
+            <Label text="Category Slug *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+            <TextField fx:id="slugField" promptText="e.g. watches"/>
+        </VBox>
+
+        <Label fx:id="errorLabel" text="" visible="false" style="-fx-text-fill: #ef4444; -fx-font-size: 12px;"/>
+    </VBox>
+
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#onCancel" styleClass="btn-secondary-outline"/>
+        <Button fx:id="saveBtn" text="Create Category" onAction="#onSave" styleClass="btn-primary-dark"/>
+    </HBox>
+
+</VBox>

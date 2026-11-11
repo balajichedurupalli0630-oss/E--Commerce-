@@ -1,0 +1,98 @@
+[
+  {
+    "_id": "ord_priya_101",
+    "userId": "user_priya",
+    "email": "priya@example.com",
+    "amount": 15980,
+    "status": "success",
+    "products": [
+      {
+        "name": "Columbia Alpine Thermal Jacket",
+        "quantity": 1,
+        "price": 8990
+      },
+      {
+        "name": "Nike Air Essentials Pullover",
+        "quantity": 1,
+        "price": 6990
+      }
+    ],
+    "createdAt": "2026-11-04T16:55:00Z"
+  },
+  {
+    "_id": "ord_66f3a1b01",
+    "userId": "user_cust_01",
+    "email": "john.doe@example.com",
+    "amount": 7980,
+    "status": "success",
+    "products": [
+      {
+        "name": "Adidas CoreFit T-Shirt",
+        "quantity": 2,
+        "price": 3990
+      }
+    ],
+    "createdAt": "2026-11-02T10:00:00Z"
+  },
+  {
+    "_id": "ord_66f3a1b02",
+    "userId": "user_cust_02",
+    "email": "sarah.connor@example.com",
+    "amount": 6990,
+    "status": "success",
+    "products": [
+      {
+        "name": "Nike Air Essentials Pullover",
+        "quantity": 1,
+        "price": 6990
+      }
+    ],
+    "createdAt": "2026-11-01T14:30:00Z"
+  },
+  {
+    "_id": "ord_66f3a1b03",
+    "userId": "user_cust_03",
+    "email": "michael.j@example.com",
+    "amount": 5990,
+    "status": "pending",
+    "products": [
+      {
+        "name": "Puma Ultra Warm Zip",
+        "quantity": 1,
+        "price": 5990
+      }
+    ],
+    "createdAt": "2026-10-31T09:15:00Z"
+  },
+  {
+    "_id": "ord_66f3a1b04",
+    "userId": "user_cust_04",
+    "email": "emma.watson@example.com",
+    "amount": 4990,
+    "status": "success",
+    "products": [
+      {
+        "name": "Under Armour StormFleece",
+        "quantity": 1,
+        "price": 4990
+      }
+    ],
+    "createdAt": "2026-10-30T16:45:00Z"
+  },
+  {
+    "_id": "ord_66f3a1b05",
+    "userId": "user_cust_05",
+    "email": "david.beck@example.com",
+    "amount": 8990,
+    "status": "failed",
+    "products": [
+      {
+        "name": "Columbia Alpine Thermal Jacket",
+        "quantity": 1,
+        "price": 8990
+      }
+    ],
+    "createdAt": "2026-10-29T11:20:00Z"
+  }
+]
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.admin.AdminOrdersController"
+      spacing="20">
+
+    <!-- HEADER & ACTIONS BAR -->
+    <HBox alignment="CENTER_LEFT" spacing="16">
+        <VBox spacing="2">
+            <Label text="Transactions &amp; Orders" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+            <Label text="Real-time order logs synced from Order Service (MongoDB &amp; Kafka)" style="-fx-font-size: 13px; -fx-text-fill: #64748b;"/>
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <TextField fx:id="searchField" promptText="Search orders..." prefWidth="260" styleClass="text-field"/>
+    </HBox>
+
+    <!-- ORDERS TABLE -->
+    <TableView fx:id="ordersTable" prefHeight="580" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="selectColumn" text="" prefWidth="40" resizable="false"/>
+            <TableColumn fx:id="idColumn" text="ORDER ID" prefWidth="180"/>
+            <TableColumn fx:id="emailColumn" text="CUSTOMER EMAIL" prefWidth="220"/>
+            <TableColumn fx:id="statusColumn" text="STATUS" prefWidth="120"/>
+            <TableColumn fx:id="amountColumn" text="AMOUNT" prefWidth="120"/>
+            <TableColumn fx:id="dateColumn" text="CREATED AT" prefWidth="150"/>
+            <TableColumn fx:id="productsColumn" text="ITEMS SUMMARY" prefWidth="260"/>
+            <TableColumn fx:id="actionsColumn" text="ACTIONS" prefWidth="100" resizable="false"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+
+</VBox>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.ProductsController"
+      spacing="20" alignment="TOP_CENTER">
+
+    <!-- SEARCH NOTICE -->
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="searchNoticeLabel" visible="false" managed="false"
+               style="-fx-font-size: 16px; -fx-font-weight: 600; -fx-text-fill: #111827;"/>
+    </HBox>
+
+    <!-- CATEGORIES BAR -->
+    <ScrollPane fitToHeight="true" vbarPolicy="NEVER" hbarPolicy="AS_NEEDED" style="-fx-background-color: transparent;">
+        <HBox fx:id="categoriesBox" alignment="CENTER_LEFT" spacing="8" styleClass="categories-container"/>
+    </ScrollPane>
+
+    <!-- FILTER / SORT BAR -->
+    <HBox alignment="CENTER_RIGHT" spacing="8">
+        <Label text="Sort by:" style="-fx-text-fill: #6b7280; -fx-font-size: 13px;"/>
+        <ComboBox fx:id="sortComboBox" prefWidth="180"/>
+    </HBox>
+
+    <!-- LOADING BOX -->
+    <VBox fx:id="loadingBox" alignment="CENTER" spacing="12" prefHeight="200" visible="false" managed="false">
+        <ProgressIndicator prefWidth="36" prefHeight="36"/>
+        <Label text="Loading catalog..." style="-fx-text-fill: #6b7280; -fx-font-size: 13px;"/>
+    </VBox>
+
+    <!-- STATUS / EMPTY MESSAGE -->
+    <Label fx:id="statusLabel" visible="false" style="-fx-text-fill: #6b7280; -fx-font-size: 14px; -fx-padding: 30px;"/>
+
+    <!-- PRODUCT GRID -->
+    <FlowPane fx:id="productsGrid" hgap="24" vgap="28" alignment="TOP_CENTER" prefWrapLength="1100"/>
+
+</VBox>

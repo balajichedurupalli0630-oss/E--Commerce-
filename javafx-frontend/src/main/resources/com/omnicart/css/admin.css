@@ -1,0 +1,203 @@
+/* OmniCart Admin Dashboard Styling */
+.admin-root {
+    -fx-background-color: #f8fafc;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent #e2e8f0 transparent transparent;
+    -fx-border-width: 0 1px 0 0;
+    -fx-pref-width: 240px;
+    -fx-padding: 16px 12px;
+}
+
+.sidebar-brand-text {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.sidebar-group-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #94a3b8;
+    -fx-padding: 12px 8px 4px 8px;
+    -fx-text-transform: uppercase;
+}
+
+.sidebar-nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+.sidebar-nav-btn:hover {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #0f172a;
+}
+.sidebar-nav-btn-active {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #0f172a;
+    -fx-font-weight: 600;
+}
+
+.sidebar-sub-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748b;
+    -fx-font-size: 12px;
+    -fx-padding: 6px 12px 6px 24px;
+    -fx-background-radius: 6px;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+.sidebar-sub-btn:hover {
+    -fx-background-color: #f8fafc;
+    -fx-text-fill: #0f172a;
+}
+
+.sidebar-footer-card {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+}
+
+/* Admin Top Bar */
+.admin-top-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #e2e8f0 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 12px 24px;
+}
+.breadcrumb-text {
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #64748b;
+}
+
+/* Dashboard Cards */
+.admin-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 8, 0, 0, 2);
+}
+
+.admin-card-header {
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #0f172a;
+}
+
+.admin-mini-card {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 12px;
+}
+.mini-card-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #0f172a;
+}
+.mini-card-sub {
+    -fx-font-size: 11px;
+    -fx-text-fill: #64748b;
+}
+.mini-card-price {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #0f172a;
+}
+
+/* Todo List */
+.todo-item-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px 12px;
+}
+.todo-checkbox {
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+}
+
+/* Data Tables */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+.table-view .column-header-background {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: transparent transparent #e2e8f0 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #64748b;
+    -fx-padding: 10px 8px;
+}
+.table-view .table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 6px 0;
+}
+.table-view .table-row-cell:hover {
+    -fx-background-color: #f8fafc;
+}
+.table-view .table-row-cell:selected {
+    -fx-background-color: #f1f5f9;
+}
+
+.table-action-menu {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+/* Charts */
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: #f1f5f9;
+    -fx-stroke-dash-array: 3 3;
+}
+.default-color0.chart-bar {
+    -fx-bar-fill: #e76e50;
+}
+.default-color1.chart-bar {
+    -fx-bar-fill: #e8c468;
+}
+.default-color0.chart-series-area-fill {
+    -fx-fill: rgba(42, 157, 144, 0.25);
+}
+.default-color0.chart-series-area-line {
+    -fx-stroke: #2a9d90;
+    -fx-stroke-width: 2px;
+}
+.default-color1.chart-series-area-fill {
+    -fx-fill: rgba(231, 110, 80, 0.25);
+}
+.default-color1.chart-series-area-line {
+    -fx-stroke: #e76e50;
+    -fx-stroke-width: 2px;
+}

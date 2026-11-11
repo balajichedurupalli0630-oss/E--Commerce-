@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.omnicart.controller.MainLayoutController"
+            styleClass="client-root" prefWidth="1280.0" prefHeight="840.0">
+
+    <top>
+        <!-- NAVBAR -->
+        <HBox alignment="CENTER" styleClass="navbar">
+            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="client-container" HBox.hgrow="ALWAYS">
+                <!-- LOGO & BRAND -->
+                <HBox alignment="CENTER_LEFT" spacing="8" onMouseClicked="#onLogoClicked" style="-fx-cursor: hand;">
+                    <ImageView fx:id="logoImageView" fitWidth="36" fitHeight="36" preserveRatio="true"/>
+                    <Label text="OMNICART." styleClass="brand-text"/>
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- NAVBAR CONTROLS -->
+                <HBox alignment="CENTER_RIGHT" spacing="16">
+                    <!-- SEARCH BAR -->
+                    <HBox alignment="CENTER_LEFT" styleClass="navbar-search-box" prefWidth="220">
+                        <Label text="🔍" style="-fx-text-fill: #9ca3af; -fx-padding: 0 4px 0 2px;"/>
+                        <TextField fx:id="searchField" promptText="Search products..." styleClass="navbar-search-field" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <!-- HOME BUTTON -->
+                    <Button fx:id="homeButton" onAction="#onHomeClicked" styleClass="icon-btn-transparent"/>
+
+                    <!-- BELL BUTTON -->
+                    <Button fx:id="bellButton" styleClass="icon-btn-transparent"/>
+
+                    <!-- CART BUTTON WITH BADGE -->
+                    <StackPane fx:id="cartButton" onMouseClicked="#onCartClicked" styleClass="cart-icon-container">
+                        <Button fx:id="cartIconButton" styleClass="icon-btn-transparent" onAction="#onCartClicked"/>
+                        <Label fx:id="cartBadge" text="0" styleClass="cart-badge" StackPane.alignment="TOP_RIGHT"/>
+                    </StackPane>
+
+                    <!-- AUTH BUTTONS -->
+                    <Button fx:id="authButton" text="Sign In" onAction="#onAuthClicked" styleClass="btn-sign-in"/>
+
+                    <MenuButton fx:id="userMenuButton" text="User" visible="false" managed="false" styleClass="user-menu-btn">
+                        <items>
+                            <MenuItem text="🛍 See Orders" onAction="#onSeeOrdersClicked"/>
+                            <SeparatorMenuItem/>
+                            <MenuItem text="🚪 Sign Out" onAction="#onSignOutClicked"/>
+                        </items>
+                    </MenuButton>
+
+                    <!-- ADMIN PORTAL SWITCH -->
+                    <Button fx:id="adminSwitchButton" text="⚙ Admin Portal" onAction="#onSwitchToAdminClicked"
+                            visible="false" managed="false" styleClass="btn-admin-portal"/>
+
+                    <!-- BACK TO PORTAL SELECTOR -->
+                    <Button text="⬅ Switch Portal" onAction="#onSwitchPortalClicked"
+                            style="-fx-background-color: transparent; -fx-border-color: #d1d5db;
+                                   -fx-border-radius: 6px; -fx-background-radius: 6px;
+                                   -fx-text-fill: #6b7280; -fx-font-size: 12px;
+                                   -fx-padding: 5px 12px; -fx-cursor: hand;"/>
+                </HBox>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <!-- SCROLLABLE CONTENT WITH EMBEDDED FOOTER -->
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <VBox alignment="TOP_CENTER" spacing="40" style="-fx-padding: 20px 0 40px 0;">
+                <!-- DYNAMIC CONTENT VIEW -->
+                <StackPane fx:id="contentArea" styleClass="client-container" VBox.vgrow="ALWAYS"/>
+
+                <!-- FOOTER -->
+                <HBox alignment="CENTER">
+                    <VBox styleClass="client-container" HBox.hgrow="ALWAYS">
+                        <HBox alignment="TOP_LEFT" spacing="60" styleClass="footer-container">
+                            <!-- BRAND INFO -->
+                            <VBox spacing="10" prefWidth="260">
+                                <HBox alignment="CENTER_LEFT" spacing="8" onMouseClicked="#onLogoClicked" style="-fx-cursor: hand;">
+                                    <ImageView fx:id="footerLogoImageView" fitWidth="32" fitHeight="32" preserveRatio="true"/>
+                                    <Label text="OMNICART." style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                                </HBox>
+                                <Label text="© 2026 OmniCart." style="-fx-text-fill: #9ca3af; -fx-font-size: 13px;"/>
+                                <Label text="All rights reserved." style="-fx-text-fill: #9ca3af; -fx-font-size: 13px;"/>
+                            </VBox>
+
+                            <!-- LINKS COLUMN 1 -->
+                            <VBox spacing="8" prefWidth="140">
+                                <Label text="Links" styleClass="footer-title"/>
+                                <Label text="Homepage" onMouseClicked="#onFooterHomeClicked" styleClass="footer-link"/>
+                                <Label text="Contact" onMouseClicked="#onFooterContactClicked" styleClass="footer-link"/>
+                                <Label text="Terms of Service" onMouseClicked="#onFooterTermsClicked" styleClass="footer-link"/>
+                                <Label text="Privacy Policy" onMouseClicked="#onFooterPrivacyClicked" styleClass="footer-link"/>
+                            </VBox>
+
+                            <!-- LINKS COLUMN 2 -->
+                            <VBox spacing="8" prefWidth="140">
+                                <Label text="Shop" styleClass="footer-title"/>
+                                <Label text="All Products" onMouseClicked="#onFooterAllProductsClicked" styleClass="footer-link"/>
+                                <Label text="New Arrivals" onMouseClicked="#onFooterNewArrivalsClicked" styleClass="footer-link"/>
+                                <Label text="Best Sellers" onMouseClicked="#onFooterBestSellersClicked" styleClass="footer-link"/>
+                                <Label text="Special Deals" onMouseClicked="#onFooterSpecialDealsClicked" styleClass="footer-link"/>
+                            </VBox>
+
+                            <!-- LINKS COLUMN 3 -->
+                            <VBox spacing="8" prefWidth="140">
+                                <Label text="Company" styleClass="footer-title"/>
+                                <Label text="About Us" onMouseClicked="#onFooterAboutClicked" styleClass="footer-link"/>
+                                <Label text="Affiliate Program" onMouseClicked="#onFooterAffiliateClicked" styleClass="footer-link"/>
+                                <Label text="Careers" onMouseClicked="#onFooterCareersClicked" styleClass="footer-link"/>
+                                <Label text="Support FAQ" onMouseClicked="#onFooterSupportClicked" styleClass="footer-link"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.LoginDialogController"
+      prefWidth="440" prefHeight="480" spacing="16" style="-fx-background-color: #ffffff; -fx-padding: 24px;">
+
+    <Label text="OmniCart Authentication" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #111827;"/>
+
+    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+
+        <!-- TAB 1: SIGN IN -->
+        <Tab text="Sign In">
+            <VBox spacing="14" style="-fx-padding: 20px 0;">
+                <VBox spacing="4">
+                    <Label text="Username or Email" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+                    <TextField fx:id="loginUsernameField" promptText="admin or customer"/>
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label text="Password" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+                    <PasswordField fx:id="loginPasswordField" promptText="••••••••"/>
+                </VBox>
+
+                <Label fx:id="loginErrorLabel" text="" visible="false" style="-fx-text-fill: #ef4444; -fx-font-size: 12px;"/>
+
+                <Button fx:id="signInBtn" text="Sign In" onAction="#onSignIn" maxWidth="Infinity" styleClass="btn-primary-dark" prefHeight="40"/>
+
+                <Separator style="-fx-padding: 6px 0;"/>
+
+                <Label text="Quick Demo Sign-In:" style="-fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #6b7280;"/>
+                <HBox spacing="10">
+                    <Button text="🔑 Admin Portal Login" onAction="#onQuickAdminLogin" styleClass="btn-secondary-outline" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="👤 Customer Login" onAction="#onQuickCustomerLogin" styleClass="btn-secondary-outline" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    <Button text="🌸 Priya Login" onAction="#onQuickPriyaLogin" styleClass="btn-secondary-outline" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- TAB 2: CREATE ACCOUNT -->
+        <Tab text="Create Account">
+            <VBox spacing="10" style="-fx-padding: 16px 0;">
+                <HBox spacing="10">
+                    <VBox spacing="3" HBox.hgrow="ALWAYS">
+                        <Label text="First Name" style="-fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+                        <TextField fx:id="regFirstNameField" promptText="John"/>
+                    </VBox>
+                    <VBox spacing="3" HBox.hgrow="ALWAYS">
+                        <Label text="Last Name" style="-fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+                        <TextField fx:id="regLastNameField" promptText="Doe"/>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="3">
+                    <Label text="Username" style="-fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+                    <TextField fx:id="regUsernameField" promptText="johndoe"/>
+                </VBox>
+
+                <VBox spacing="3">
+                    <Label text="Email Address" style="-fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+                    <TextField fx:id="regEmailField" promptText="john@example.com"/>
+                </VBox>
+
+                <VBox spacing="3">
+                    <Label text="Password" style="-fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #4b5563;"/>
+                    <PasswordField fx:id="regPasswordField" promptText="••••••••"/>
+                </VBox>
+
+                <Label fx:id="regErrorLabel" text="" visible="false" style="-fx-text-fill: #ef4444; -fx-font-size: 11px;"/>
+
+                <Button fx:id="registerBtn" text="Create Account" onAction="#onRegister" maxWidth="Infinity" styleClass="btn-primary-dark" prefHeight="38"/>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+
+</VBox>

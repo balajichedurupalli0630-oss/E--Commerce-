@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.omnicart.controller.admin.AdminLayoutController"
+            styleClass="admin-root" prefWidth="1280.0" prefHeight="840.0">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox styleClass="admin-sidebar" spacing="12">
+            <!-- BRAND HEADER -->
+            <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 6px 8px 14px 8px;">
+                <ImageView fx:id="adminLogoImageView" fitWidth="28" fitHeight="28" preserveRatio="true"/>
+                <Label text="OmniCart" styleClass="sidebar-brand-text"/>
+            </HBox>
+
+            <Separator/>
+
+            <ScrollPane fitToWidth="true" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                <VBox spacing="4">
+                    <!-- APPLICATION GROUP -->
+                    <Label text="APPLICATION" styleClass="sidebar-group-label"/>
+                    <Button fx:id="homeNavBtn" text="Dashboard Home" onAction="#onNavigateHome" maxWidth="Infinity" styleClass="sidebar-nav-btn"/>
+
+                    <!-- PRODUCTS GROUP -->
+                    <Label text="PRODUCTS" styleClass="sidebar-group-label"/>
+                    <Button fx:id="productsNavBtn" text="See All Products" onAction="#onNavigateProducts" maxWidth="Infinity" styleClass="sidebar-nav-btn"/>
+                    <Button fx:id="addProductNavBtn" text="+ Add Product" onAction="#onOpenAddProduct" maxWidth="Infinity" styleClass="sidebar-sub-btn"/>
+                    <Button fx:id="addCategoryNavBtn" text="+ Add Category" onAction="#onOpenAddCategory" maxWidth="Infinity" styleClass="sidebar-sub-btn"/>
+
+                    <!-- USERS GROUP -->
+                    <Label text="USERS" styleClass="sidebar-group-label"/>
+                    <Button fx:id="usersNavBtn" text="See All Users" onAction="#onNavigateUsers" maxWidth="Infinity" styleClass="sidebar-nav-btn"/>
+                    <Button fx:id="addUserNavBtn" text="+ Add User" onAction="#onOpenAddUser" maxWidth="Infinity" styleClass="sidebar-sub-btn"/>
+
+                    <!-- TRANSACTIONS GROUP -->
+                    <Label text="ORDERS / PAYMENTS" styleClass="sidebar-group-label"/>
+                    <Button fx:id="ordersNavBtn" text="See All Transactions" onAction="#onNavigateOrders" maxWidth="Infinity" styleClass="sidebar-nav-btn"/>
+                </VBox>
+            </ScrollPane>
+
+            <Separator/>
+
+            <!-- SIDEBAR FOOTER -->
+            <VBox spacing="8" styleClass="sidebar-footer-card">
+                <Label fx:id="adminUserNameLabel" text="System Admin" style="-fx-font-size: 13px; -fx-font-weight: 600; -fx-text-fill: #0f172a;"/>
+                <Label text="Role: Administrator" style="-fx-font-size: 11px; -fx-text-fill: #64748b;"/>
+                <Button fx:id="returnToStoreBtn" text="🏪 Customer Store" onAction="#onReturnToStore" maxWidth="Infinity" styleClass="btn-secondary-outline"/>
+                <Button text="⬅ Switch Portal" onAction="#onSwitchPortal" maxWidth="Infinity"
+                        style="-fx-background-color: transparent; -fx-border-color: #cbd5e1;
+                               -fx-border-radius: 6px; -fx-background-radius: 6px;
+                               -fx-text-fill: #64748b; -fx-font-size: 12px; -fx-cursor: hand;"/>
+                <Button text="Sign Out" onAction="#onSignOut" maxWidth="Infinity" styleClass="btn-trash"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- TOP HEADER -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="admin-top-bar">
+            <Label fx:id="breadcrumbLabel" text="Dashboard" styleClass="breadcrumb-text"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🏪 Customer Store" onAction="#onReturnToStore" styleClass="btn-secondary-outline"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER DYNAMIC CONTENT -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <StackPane fx:id="adminContentArea" style="-fx-padding: 24px;"/>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

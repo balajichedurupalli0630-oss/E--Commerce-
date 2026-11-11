@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.omnicart.controller.admin.AddUserDialogController"
+      prefWidth="440" prefHeight="440" spacing="16" style="-fx-background-color: #ffffff; -fx-padding: 24px;">
+
+    <Label text="Add New User Account" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+
+    <VBox spacing="12" VBox.vgrow="ALWAYS">
+        <HBox spacing="12">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="First Name *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                <TextField fx:id="firstNameField" promptText="First Name"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Last Name" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                <TextField fx:id="lastNameField" promptText="Last Name"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="4">
+            <Label text="Username *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+            <TextField fx:id="usernameField" promptText="username"/>
+        </VBox>
+
+        <VBox spacing="4">
+            <Label text="Email Address *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+            <TextField fx:id="emailField" promptText="user@example.com"/>
+        </VBox>
+
+        <VBox spacing="4">
+            <Label text="Temporary Password *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+            <PasswordField fx:id="passwordField" promptText="••••••••"/>
+        </VBox>
+
+        <Label fx:id="errorLabel" text="" visible="false" style="-fx-text-fill: #ef4444; -fx-font-size: 12px;"/>
+    </VBox>
+
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#onCancel" styleClass="btn-secondary-outline"/>
+        <Button fx:id="saveBtn" text="Create User" onAction="#onSave" styleClass="btn-primary-dark"/>
+    </HBox>
+
+</VBox>
