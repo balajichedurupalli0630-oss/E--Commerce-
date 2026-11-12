@@ -23,54 +23,30 @@ public class ProductDTO {
     public ProductDTO(Long id, String name, String shortDescription, String description, Integer price,
                       List<String> sizes, List<String> colors, Map<String, String> images,
                       String categorySlug, CategoryDTO category, Instant createdAt, Instant updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.price = price;
-        this.sizes = sizes;
-        this.colors = colors;
-        this.images = images;
-        this.categorySlug = categorySlug;
-        this.category = category;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.id = id; this.name = name; this.shortDescription = shortDescription; this.description = description;
+        this.price = price; this.sizes = sizes; this.colors = colors; this.images = images;
+        this.categorySlug = categorySlug; this.category = category; this.createdAt = createdAt; this.updatedAt = updatedAt;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    public static Builder builder() { return new Builder(); }
 
     public static class Builder {
-        private Long id;
-        private String name;
-        private String shortDescription;
-        private String description;
-        private Integer price;
-        private List<String> sizes;
-        private List<String> colors;
-        private Map<String, String> images;
-        private String categorySlug;
-        private CategoryDTO category;
-        private Instant createdAt;
-        private Instant updatedAt;
+        private final ProductDTO dto = new ProductDTO();
 
-        public Builder id(Long id) { this.id = id; return this; }
-        public Builder name(String name) { this.name = name; return this; }
-        public Builder shortDescription(String shortDescription) { this.shortDescription = shortDescription; return this; }
-        public Builder description(String description) { this.description = description; return this; }
-        public Builder price(Integer price) { this.price = price; return this; }
-        public Builder sizes(List<String> sizes) { this.sizes = sizes; return this; }
-        public Builder colors(List<String> colors) { this.colors = colors; return this; }
-        public Builder images(Map<String, String> images) { this.images = images; return this; }
-        public Builder categorySlug(String categorySlug) { this.categorySlug = categorySlug; return this; }
-        public Builder category(CategoryDTO category) { this.category = category; return this; }
-        public Builder createdAt(Instant createdAt) { this.createdAt = createdAt; return this; }
-        public Builder updatedAt(Instant updatedAt) { this.updatedAt = updatedAt; return this; }
+        public Builder id(Long id) { dto.id = id; return this; }
+        public Builder name(String name) { dto.name = name; return this; }
+        public Builder shortDescription(String shortDescription) { dto.shortDescription = shortDescription; return this; }
+        public Builder description(String description) { dto.description = description; return this; }
+        public Builder price(Integer price) { dto.price = price; return this; }
+        public Builder sizes(List<String> sizes) { dto.sizes = sizes; return this; }
+        public Builder colors(List<String> colors) { dto.colors = colors; return this; }
+        public Builder images(Map<String, String> images) { dto.images = images; return this; }
+        public Builder categorySlug(String categorySlug) { dto.categorySlug = categorySlug; return this; }
+        public Builder category(CategoryDTO category) { dto.category = category; return this; }
+        public Builder createdAt(Instant createdAt) { dto.createdAt = createdAt; return this; }
+        public Builder updatedAt(Instant updatedAt) { dto.updatedAt = updatedAt; return this; }
 
-        public ProductDTO build() {
-            return new ProductDTO(id, name, shortDescription, description, price, sizes, colors, images, categorySlug, category, createdAt, updatedAt);
-        }
+        public ProductDTO build() { return dto; }
     }
 
     public Long getId() { return id; }
