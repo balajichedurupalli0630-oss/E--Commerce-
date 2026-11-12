@@ -1,31 +1,12 @@
 "use client";
 
-import {
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "./ui/button";
 
 const formSchema = z.object({
@@ -34,10 +15,18 @@ const formSchema = z.object({
   status: z.enum(["pending", "processing", "success", "failed"]),
 });
 
+const statuses = [
+  { value: "pending", label: "Pending" },
+  { value: "processing", label: "Processing" },
+  { value: "success", label: "Success" },
+  { value: "failed", label: "Failed" },
+];
+
 const AddOrder = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+
   return (
     <SheetContent>
       <SheetHeader>
@@ -51,12 +40,8 @@ const AddOrder = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Amount</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter the amount of the order.
-                    </FormDescription>
+                    <FormControl><Input {...field} /></FormControl>
+                    <FormDescription>Enter the amount of the order.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -67,9 +52,7 @@ const AddOrder = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>User ID</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
+                    <FormControl><Input {...field} /></FormControl>
                     <FormDescription>Enter the User ID.</FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -78,25 +61,20 @@ const AddOrder = () => {
               <FormField
                 control={form.control}
                 name="status"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
                     <FormControl>
                       <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a status" />
-                        </SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Select a status" /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="pending">Pending</SelectItem>
-                          <SelectItem value="processing">Processing</SelectItem>
-                          <SelectItem value="success">Success</SelectItem>
-                          <SelectItem value="failed">Failed</SelectItem>
+                          {statuses.map((s) => (
+                            <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
-                    <FormDescription>
-                      Enter the status of the order.
-                    </FormDescription>
+                    <FormDescription>Enter the status of the order.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
