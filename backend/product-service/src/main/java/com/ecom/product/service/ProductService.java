@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -44,32 +43,20 @@ public class ProductService {
 
         Specification<Product> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-
-            if (category != null && !category.isBlank()) {
-                predicates.add(cb.equal(root.get("categorySlug"), category));
-            }
-
-            if (search != null && !search.isBlank()) {
-                predicates.add(cb.like(cb.lower(root.get("name")), "%" + search.toLowerCase() + "%"));
-            }
-
+            if (category != null && !category.isBlank()) predicates.add(cb.equal(root.get("categorySlug"), category));
+            if (search != null && !search.isBlank()) predicates.add(cb.like(cb.lower(root.get("name")), "%" + search.toLowerCase() + "%"));
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
-        List<Product> products;
-        if (limit != null && limit > 0) {
-            products = productRepository.findAll(spec, PageRequest.of(0, limit, sortObj)).getContent();
-        } else {
-            products = productRepository.findAll(spec, sortObj);
-        }
+        List<Product> products = (limit != null && limit > 0)
+                ? productRepository.findAll(spec, PageRequest.of(0, limit, sortObj)).getContent()
+                : productRepository.findAll(spec, sortObj);
 
-        return products.stream().map(this::toDTO).collect(Collectors.toList());
+        return products.stream().map(this::toDTO).toList();
     }
 
     public ProductDTO getProduct(Long id) {
-        return productRepository.findById(id)
-                .map(this::toDTO)
-                .orElse(null);
+        return productRepository.findById(id).map(this::toDTO).orElse(null);
     }
 
     @Transactional
@@ -77,21 +64,14 @@ public class ProductService {
         List<String> colors = dto.getColors();
         Map<String, String> images = dto.getImages();
 
-        if (colors == null || colors.isEmpty()) {
-            throw new IllegalArgumentException("Colors array is required!");
-        }
-
-        if (images == null || images.isEmpty()) {
-            throw new IllegalArgumentException("Images object is required!");
-        }
+        if (colors == null || colors.isEmpty()) throw new IllegalArgumentException("Colors array is required!");
+        if (images == null || images.isEmpty()) throw new IllegalArgumentException("Images object is required!");
 
         List<String> missingColors = colors.stream()
                 .filter(color -> !images.containsKey(color) || images.get(color) == null || images.get(color).isBlank())
-                .collect(Collectors.toList());
+                .toList();
 
-        if (!missingColors.isEmpty()) {
-            throw new IllegalArgumentException("Missing images for colors: " + missingColors);
-        }
+        if (!missingColors.isEmpty()) throw new IllegalArgumentException("Missing images for colors: " + missingColors);
 
         Product product = Product.builder()
                 .name(dto.getName())
@@ -106,18 +86,11 @@ public class ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        // Publish to Kafka: product.created
-        try {
-            ProductCreatedEvent event = ProductCreatedEvent.builder()
-                    .id(savedProduct.getId().toString())
-                    .name(savedProduct.getName())
-                    .price(savedProduct.getPrice())
-                    .build();
-            kafkaTemplate.send("product.created", event);
-            log.info("Sent product.created event to Kafka for product id: {}", savedProduct.getId());
-        } catch (Exception e) {
-            log.error("Failed to publish product.created event", e);
-        }
+        sendEvent("product.created", ProductCreatedEvent.builder()
+                .id(savedProduct.getId().toString())
+                .name(savedProduct.getName())
+                .price(savedProduct.getPrice())
+                .build(), savedProduct.getId());
 
         return toDTO(savedProduct);
     }
@@ -146,22 +119,14 @@ public class ProductService {
 
         productRepository.delete(product);
 
-        // Publish to Kafka: product.deleted
-        try {
-            ProductDeletedEvent event = ProductDeletedEvent.builder()
-                    .id(id)
-                    .build();
-            kafkaTemplate.send("product.deleted", event);
-            log.info("Sent product.deleted event to Kafka for product id: {}", id);
-        } catch (Exception e) {
-            log.error("Failed to publish product.deleted event", e);
-        }
+        sendEvent("product.deleted", ProductDeletedEvent.builder().id(id).build(), id);
 
         return toDTO(product);
     }
 
     public ProductDTO toDTO(Product product) {
         if (product == null) return null;
+        var cat = product.getCategory();
         return ProductDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -172,13 +137,18 @@ public class ProductService {
                 .colors(product.getColors())
                 .images(product.getImages())
                 .categorySlug(product.getCategorySlug())
-                .category(product.getCategory() != null ? CategoryDTO.builder()
-                        .id(product.getCategory().getId())
-                        .name(product.getCategory().getName())
-                        .slug(product.getCategory().getSlug())
-                        .build() : null)
+                .category(cat != null ? CategoryDTO.builder().id(cat.getId()).name(cat.getName()).slug(cat.getSlug()).build() : null)
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
                 .build();
+    }
+
+    private void sendEvent(String topic, Object event, Object id) {
+        try {
+            kafkaTemplate.send(topic, event);
+            log.info("Sent {} event to Kafka for product id: {}", topic, id);
+        } catch (Exception e) {
+            log.error("Failed to publish {} event", topic, e);
+        }
     }
 }
