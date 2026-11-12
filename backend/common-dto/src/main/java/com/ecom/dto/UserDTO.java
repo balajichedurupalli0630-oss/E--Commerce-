@@ -14,34 +14,23 @@ public class UserDTO {
     public UserDTO() {}
 
     public UserDTO(String id, String username, String firstName, String lastName, List<Map<String, Object>> emailAddresses, Map<String, Object> publicMetadata) {
-        this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddresses = emailAddresses;
-        this.publicMetadata = publicMetadata;
+        this.id = id; this.username = username; this.firstName = firstName;
+        this.lastName = lastName; this.emailAddresses = emailAddresses; this.publicMetadata = publicMetadata;
     }
 
     public static Builder builder() { return new Builder(); }
 
     public static class Builder {
-        private String id;
-        private String username;
-        private String firstName;
-        private String lastName;
-        private List<Map<String, Object>> emailAddresses;
-        private Map<String, Object> publicMetadata;
+        private final UserDTO dto = new UserDTO();
 
-        public Builder id(String id) { this.id = id; return this; }
-        public Builder username(String username) { this.username = username; return this; }
-        public Builder firstName(String firstName) { this.firstName = firstName; return this; }
-        public Builder lastName(String lastName) { this.lastName = lastName; return this; }
-        public Builder emailAddresses(List<Map<String, Object>> emailAddresses) { this.emailAddresses = emailAddresses; return this; }
-        public Builder publicMetadata(Map<String, Object> publicMetadata) { this.publicMetadata = publicMetadata; return this; }
+        public Builder id(String id) { dto.id = id; return this; }
+        public Builder username(String username) { dto.username = username; return this; }
+        public Builder firstName(String firstName) { dto.firstName = firstName; return this; }
+        public Builder lastName(String lastName) { dto.lastName = lastName; return this; }
+        public Builder emailAddresses(List<Map<String, Object>> emailAddresses) { dto.emailAddresses = emailAddresses; return this; }
+        public Builder publicMetadata(Map<String, Object> publicMetadata) { dto.publicMetadata = publicMetadata; return this; }
 
-        public UserDTO build() {
-            return new UserDTO(id, username, firstName, lastName, emailAddresses, publicMetadata);
-        }
+        public UserDTO build() { return dto; }
     }
 
     public String getId() { return id; }
