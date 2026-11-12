@@ -20,7 +20,6 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -36,16 +35,12 @@ public class OrderService {
     }
 
     public List<OrderDTO> getUserOrders(String userId) {
-        return orderRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        return orderRepository.findByUserIdOrderByCreatedAtDesc(userId).stream().map(this::toDTO).toList();
     }
 
     public List<OrderDTO> getOrders(Integer limit) {
         int pageSize = (limit != null && limit > 0) ? limit : 50;
-        return orderRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, pageSize)).stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        return orderRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, pageSize)).stream().map(this::toDTO).toList();
     }
 
     public OrderDTO createOrder(PaymentSuccessfulEvent event) {
@@ -62,7 +57,6 @@ public class OrderService {
         Order saved = orderRepository.save(order);
         log.info("Saved order {} for user {}", saved.getId(), saved.getUserId());
 
-        // Publish order.created to Kafka
         try {
             OrderCreatedEvent createdEvent = OrderCreatedEvent.builder()
                     .email(saved.getEmail())
@@ -97,20 +91,15 @@ public class OrderService {
         return orderRepository.findById(orderId).map(order -> {
             order.setStatus("cancelled");
             order.setUpdatedAt(Instant.now());
-            Order saved = orderRepository.save(order);
             log.info("Cancelled order {}", orderId);
-            return toDTO(saved);
-        }).orElse(null);}
+            return toDTO(orderRepository.save(order));
+        }).orElse(null);
+    }
 
     public List<OrderChartDTO> getOrderChart() {
-        LocalDate now = LocalDate.now(ZoneOffset.UTC);
-        YearMonth currentMonth = YearMonth.from(now);
-
+        YearMonth currentMonth = YearMonth.from(LocalDate.now(ZoneOffset.UTC));
         Instant sixMonthsAgo = currentMonth.minusMonths(5).atDay(1).atStartOfDay().toInstant(ZoneOffset.UTC);
-        Instant nowInstant = Instant.now();
-
-        List<Order> recentOrders = orderRepository.findByCreatedAtBetween(sixMonthsAgo, nowInstant);
-
+        List<Order> recentOrders = orderRepository.findByCreatedAtBetween(sixMonthsAgo, Instant.now());
         List<OrderChartDTO> results = new ArrayList<>();
 
         for (int i = 5; i >= 0; i--) {
@@ -118,19 +107,17 @@ public class OrderService {
             Instant monthStart = targetMonth.atDay(1).atStartOfDay().toInstant(ZoneOffset.UTC);
             Instant monthEnd = targetMonth.atEndOfMonth().atTime(23, 59, 59).toInstant(ZoneOffset.UTC);
 
-            long total = recentOrders.stream()
-                    .filter(o -> o.getCreatedAt() != null && !o.getCreatedAt().isBefore(monthStart) && !o.getCreatedAt().isAfter(monthEnd))
-                    .count();
-
-            long successful = recentOrders.stream()
-                    .filter(o -> o.getCreatedAt() != null && !o.getCreatedAt().isBefore(monthStart) && !o.getCreatedAt().isAfter(monthEnd))
-                    .filter(o -> "success".equalsIgnoreCase(o.getStatus()))
-                    .count();
-
-            String monthName = targetMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+            long total = 0, successful = 0;
+            for (Order o : recentOrders) {
+                Instant c = o.getCreatedAt();
+                if (c != null && !c.isBefore(monthStart) && !c.isAfter(monthEnd)) {
+                    total++;
+                    if ("success".equalsIgnoreCase(o.getStatus())) successful++;
+                }
+            }
 
             results.add(OrderChartDTO.builder()
-                    .month(monthName)
+                    .month(targetMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH))
                     .total(total)
                     .successful(successful)
                     .build());
@@ -139,17 +126,12 @@ public class OrderService {
         return results;
     }
 
-    public OrderDTO toDTO(Order order) {
-        if (order == null) return null;
+    public OrderDTO toDTO(Order o) {
+        if (o == null) return null;
         return OrderDTO.builder()
-                .id(order.getId())
-                .userId(order.getUserId())
-                .email(order.getEmail())
-                .amount(order.getAmount())
-                .status(order.getStatus())
-                .products(order.getProducts())
-                .createdAt(order.getCreatedAt())
-                .updatedAt(order.getUpdatedAt())
+                .id(o.getId()).userId(o.getUserId()).email(o.getEmail())
+                .amount(o.getAmount()).status(o.getStatus()).products(o.getProducts())
+                .createdAt(o.getCreatedAt()).updatedAt(o.getUpdatedAt())
                 .build();
     }
 }
