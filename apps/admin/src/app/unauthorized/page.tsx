@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
+import { useAuth } from "@/context/AuthContext";
 
 const Page = () => {
   const { signOut } = useAuth();

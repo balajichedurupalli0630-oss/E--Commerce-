@@ -13,7 +13,7 @@
     <artifactId>product-service</artifactId>
     <packaging>jar</packaging>
     <name>product-service</name>
-    <description>Product &amp; Category Service with PostgreSQL, JPA and Kafka</description>
+    <description>Product &amp; Category Service with MySQL, JPA and Kafka</description>
 
     <dependencies>
         <dependency>
@@ -37,8 +37,8 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

@@ -16,10 +16,15 @@ public class User {
     private Map<String, Object> publicMetadata;
     private String imageUrl;
     private Boolean banned;
+    private String passwordHash;
 
     public User() {}
 
     public User(String id, String username, String firstName, String lastName, String email, String role) {
+        this(id, username, firstName, lastName, email, role, null);
+    }
+
+    public User(String id, String username, String firstName, String lastName, String email, String role, String passwordHash) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -30,6 +35,7 @@ public class User {
         if (role != null) {
             this.publicMetadata = Map.of("role", role);
         }
+        this.passwordHash = passwordHash;
     }
 
     public String getId() { return id; }
@@ -55,6 +61,9 @@ public class User {
 
     public Boolean getBanned() { return banned; }
     public void setBanned(Boolean banned) { this.banned = banned; }
+
+    public String getPasswordHash() { return passwordHash; }
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
     public String getFullName() {
         if (firstName != null && !firstName.isBlank()) {

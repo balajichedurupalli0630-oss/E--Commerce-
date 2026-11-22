@@ -10,6 +10,6 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-clerk:
-  secret:
-    key: ${CLERK_SECRET_KEY:}
+jwt:
+  secret: ${JWT_SECRET:omnicart-production-grade-jwt-secret-key-256-bit-minimum-security-standard}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24 hours

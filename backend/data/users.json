@@ -1,0 +1,34 @@
+[ {
+  "id" : "user_cust_01",
+  "username" : "johndoe",
+  "passwordHash" : "yu+aHK/Ps++HZfVe2pKWiw==$nEVSgLNAUY8DE1viDUgFzj8W2Qhp9qhRV+vL/IWuguk=",
+  "firstName" : "John",
+  "lastName" : "Doe",
+  "email" : "john.doe@example.com",
+  "role" : "user",
+  "imageUrl" : "/users/2.png",
+  "banned" : false,
+  "createdAt" : 1795328749777
+}, {
+  "id" : "user_admin_01",
+  "username" : "admin",
+  "passwordHash" : "QYEfrSzrPBKJcJzDAOI7LA==$Lqgt//u20JrDQHA40fEL09i6yMNG+Z1uhhBcQgVUnzY=",
+  "firstName" : "System",
+  "lastName" : "Admin",
+  "email" : "admin@ecom.com",
+  "role" : "admin",
+  "imageUrl" : "/users/1.png",
+  "banned" : false,
+  "createdAt" : 1795328749596
+}, {
+  "id" : "user_priya",
+  "username" : "priya",
+  "passwordHash" : "R2YlcbgSIuqRUWcghn6ceA==$DlWtxAKsUSBcYcQRt5FohQphC7yyqTXPZFT5Rv8UObo=",
+  "firstName" : "Priya",
+  "lastName" : "Sharma",
+  "email" : "priya@example.com",
+  "role" : "user",
+  "imageUrl" : "/users/3.png",
+  "banned" : false,
+  "createdAt" : 1795328749922
+} ]

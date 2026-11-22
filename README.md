@@ -38,7 +38,7 @@ OmniCart/
 │   ├── product-service/      # PostgreSQL 16 + JPA + Kafka (Port 8000)
 │   ├── order-service/        # MongoDB 7 + Reactive/Sync + Kafka (Port 8001)
 │   ├── payment-service/      # Stripe SDK + Kafka (Port 8002)
-│   ├── auth-service/         # Clerk API & Local Auth + Kafka (Port 8003)
+│   ├── auth-service/         # Native JWT Auth + PBKDF2 + Kafka (Port 8003)
 │   ├── email-service/        # Spring Mail + Kafka Event Worker
 │   ├── docker-compose.yml    # PostgreSQL, MongoDB, Kafka (KRaft), Kafka UI
 │   ├── start-services.sh     # Infrastructure starter (Docker)
@@ -61,7 +61,7 @@ OmniCart/
 | **Product Service** | `:8000` | Spring Boot 3, PostgreSQL 16 | Product catalog, auto-seeding, search, category filters |
 | **Order Service** | `:8001` | Spring Boot 3, MongoDB 7 | Order lifecycle, order cancellation, status tracking |
 | **Payment Service** | `:8002` | Spring Boot 3, Stripe SDK | Stripe checkout sessions & webhook processing |
-| **Auth Service** | `:8003` | Spring Boot 3, Clerk | User authentication, token validation, user lists |
+| **Auth Service** | `:8003` | Spring Boot 3, JWT, PBKDF2 | Native JWT authentication, sign-in/sign-up, token verification, user lists |
 | **Email Service** | *Worker* | Spring Boot 3, Spring Mail | Asynchronous Kafka event consumer for order notifications |
 | **Kafka UI** | `:8080` | Provectus Kafka-UI | Web console for inspecting Kafka topics and events |
 | **Next.js Storefront** | `:3002` | Next.js 15, React 19, Tailwind | Web customer storefront (alternative web client) |

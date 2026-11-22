@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import EditUser from "@/components/EditUser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/AppLineChart";
-import { auth, User } from "@clerk/nextjs/server";
+import { auth, type User } from "@/lib/auth";
 
 const getData = async (id: string): Promise<User | null> => {
   const { getToken } = await auth();

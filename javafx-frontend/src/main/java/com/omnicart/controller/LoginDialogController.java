@@ -53,7 +53,9 @@ public class LoginDialogController implements Initializable {
             Platform.runLater(() -> {
                 signInBtn.setDisable(false);
                 if (user != null) {
-                    SessionManager.getInstance().setSession(user, "token_" + user.getId());
+                    if (SessionManager.getInstance().getAuthToken() == null) {
+                        SessionManager.getInstance().setSession(user, "token_" + user.getId());
+                    }
                     ToastService.showSuccess("Signed in as " + user.getFullName() + " (" + user.getRole().toUpperCase() + ")");
                     closeDialog();
                 } else {
@@ -64,7 +66,9 @@ public class LoginDialogController implements Initializable {
         }).exceptionally(ex -> {
             Platform.runLater(() -> {
                 signInBtn.setDisable(false);
-                loginErrorLabel.setText("Login error: " + ex.getMessage());
+                Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                String msg = cause.getMessage() != null ? cause.getMessage() : "Invalid credentials.";
+                loginErrorLabel.setText(msg);
                 loginErrorLabel.setVisible(true);
             });
             return null;
@@ -112,14 +116,18 @@ public class LoginDialogController implements Initializable {
         AuthApiService.getInstance().createUser(uname, fname, lname, email, password).thenAccept(user -> {
             Platform.runLater(() -> {
                 registerBtn.setDisable(false);
-                SessionManager.getInstance().setSession(user, "token_" + user.getId());
+                if (SessionManager.getInstance().getAuthToken() == null) {
+                    SessionManager.getInstance().setSession(user, "token_" + user.getId());
+                }
                 ToastService.showSuccess("Account created successfully!");
                 closeDialog();
             });
         }).exceptionally(ex -> {
             Platform.runLater(() -> {
                 registerBtn.setDisable(false);
-                regErrorLabel.setText("Registration error: " + ex.getMessage());
+                Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                String msg = cause.getMessage() != null ? cause.getMessage() : "Registration error.";
+                regErrorLabel.setText(msg);
                 regErrorLabel.setVisible(true);
             });
             return null;

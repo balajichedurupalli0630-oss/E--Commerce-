@@ -8,8 +8,7 @@ import {
   SignedOut,
   SignInButton,
   SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+} from "@/context/AuthContext";
 import ProfileButton from "./ProfileButton";
 
 const Navbar = () => {

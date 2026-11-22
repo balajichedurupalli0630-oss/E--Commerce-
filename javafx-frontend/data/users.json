@@ -1,0 +1,157 @@
+[ {
+  "id" : "user_priya",
+  "username" : "priya",
+  "firstName" : "Priya",
+  "lastName" : "Sharma",
+  "emailAddresses" : [ {
+    "email_address" : "priya@example.com",
+    "id" : "email_user_priya"
+  } ],
+  "publicMetadata" : {
+    "role" : "user"
+  },
+  "imageUrl" : "/users/3.png",
+  "banned" : false,
+  "passwordHash" : "Sfzy5qDMW5E15+wugdvvLw==$SvAHkuE7r3QqL5sJtI+xw3gtq6ahJnkJH1p4fln3pkU=",
+  "fullName" : "Priya Sharma",
+  "role" : "user",
+  "admin" : false,
+  "status" : "active",
+  "primaryEmail" : "priya@example.com"
+}, {
+  "id" : "user_yashd",
+  "username" : "yashd",
+  "firstName" : "yash",
+  "lastName" : "dogga",
+  "emailAddresses" : [ {
+    "email_address" : "yash@gmail.com"
+  } ],
+  "publicMetadata" : {
+    "role" : "user"
+  },
+  "imageUrl" : "/users/3.png",
+  "banned" : null,
+  "passwordHash" : "O8oB94IF/1r3lsPksmq+CA==$oaxcvMr2mxGjG/Y80SAeFz/sVfodusceNMVh5EZSHsY=",
+  "fullName" : "yash dogga",
+  "role" : "user",
+  "admin" : false,
+  "status" : "active",
+  "primaryEmail" : "yash@gmail.com"
+}, {
+  "id" : "user_aas",
+  "username" : "aas",
+  "firstName" : "Aas",
+  "lastName" : "",
+  "emailAddresses" : [ {
+    "email_address" : "aas@example.com"
+  } ],
+  "publicMetadata" : {
+    "role" : "user"
+  },
+  "imageUrl" : "/users/3.png",
+  "banned" : null,
+  "passwordHash" : "LoaKGQZo/40HXGlc2kjKjA==$I0ziiqxhbdWTFQZPpdGg/iYhMsE2UspWX2Dz+e+Lk4c=",
+  "fullName" : "Aas",
+  "role" : "user",
+  "admin" : false,
+  "status" : "active",
+  "primaryEmail" : "aas@example.com"
+}, {
+  "id" : "user_cust_01",
+  "username" : "johndoe",
+  "firstName" : "John",
+  "lastName" : "Doe",
+  "emailAddresses" : [ {
+    "email_address" : "john.doe@example.com",
+    "id" : "email_user_cust_01"
+  } ],
+  "publicMetadata" : {
+    "role" : "user"
+  },
+  "imageUrl" : "/users/2.png",
+  "banned" : false,
+  "passwordHash" : "Fk7zyXyTLEDKaqdZBXTczA==$+g9aTp3dwnZNAjy8beSr6fnoXeCpcOn2tL5DLbNm9wU=",
+  "fullName" : "John Doe",
+  "role" : "user",
+  "admin" : false,
+  "status" : "active",
+  "primaryEmail" : "john.doe@example.com"
+}, {
+  "id" : "user_cfadcf5e",
+  "username" : "yash d",
+  "firstName" : "yash",
+  "lastName" : "d",
+  "emailAddresses" : [ {
+    "email_address" : "yash@gmail.com",
+    "id" : "email_user_cfadcf5e"
+  } ],
+  "publicMetadata" : {
+    "role" : "user"
+  },
+  "imageUrl" : "/users/7.png",
+  "banned" : false,
+  "passwordHash" : "N4ZzMcPoSHT32jjpEg1fAg==$ONOwNEEoah9t3FP7LAvwDUrANydDXJywtcr1PSR2tU8=",
+  "fullName" : "yash d",
+  "role" : "user",
+  "admin" : false,
+  "status" : "active",
+  "primaryEmail" : "yash@gmail.com"
+}, {
+  "id" : "user_yashdf",
+  "username" : "yashdf",
+  "firstName" : "Yashdf",
+  "lastName" : "",
+  "emailAddresses" : [ {
+    "email_address" : "yashdf@example.com"
+  } ],
+  "publicMetadata" : {
+    "role" : "user"
+  },
+  "imageUrl" : "/users/3.png",
+  "banned" : null,
+  "passwordHash" : "gVKU1hMtunqidI3BU89pDA==$jgbG2MYvMNYx7ymDGTvYzTwHb5baddtBwkSELxOA/bg=",
+  "fullName" : "Yashdf",
+  "role" : "user",
+  "admin" : false,
+  "status" : "active",
+  "primaryEmail" : "yashdf@example.com"
+}, {
+  "id" : "user_admin_01",
+  "username" : "admin",
+  "firstName" : "System",
+  "lastName" : "Admin",
+  "emailAddresses" : [ {
+    "email_address" : "admin@ecom.com",
+    "id" : "email_user_admin_01"
+  } ],
+  "publicMetadata" : {
+    "role" : "admin"
+  },
+  "imageUrl" : "/users/1.png",
+  "banned" : false,
+  "passwordHash" : "tWxrHE7Phu/wzkTQNli8Qg==$Ys6UTIN1H1GMIPu2Axn5+HCZv7dukiyJjNqXbXOOXK8=",
+  "fullName" : "System Admin",
+  "role" : "admin",
+  "admin" : true,
+  "status" : "active",
+  "primaryEmail" : "admin@ecom.com"
+}, {
+  "id" : "user_yashh",
+  "username" : "yashh",
+  "firstName" : "Yashh",
+  "lastName" : "",
+  "emailAddresses" : [ {
+    "email_address" : "yashh@example.com"
+  } ],
+  "publicMetadata" : {
+    "role" : "user"
+  },
+  "imageUrl" : "/users/3.png",
+  "banned" : null,
+  "passwordHash" : "+D3AlCkwPeSDk5XGnO0OVw==$MuooOEE/a3fqw6NaYuWD6OanlwMgAX3RjEbuAkI78GI=",
+  "fullName" : "Yashh",
+  "role" : "user",
+  "admin" : false,
+  "status" : "active",
+  "primaryEmail" : "yashh@example.com"
+} ]

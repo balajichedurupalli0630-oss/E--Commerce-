@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR"
 
 echo "=== E-Commerce Java Microservices Platform ==="
-echo "1. Starting Infrastructure (PostgreSQL, MongoDB, Kafka, Kafka UI)..."
+echo "1. Starting Infrastructure (MySQL, MongoDB, Kafka, Kafka UI)..."
 docker compose up -d
 
 echo ""
@@ -14,7 +14,7 @@ docker compose ps
 
 echo ""
 echo "=== Ports & Services ==="
-echo "PostgreSQL:      localhost:5432 (productdb)"
+echo "MySQL:           localhost:3306 (productdb)"
 echo "MongoDB:         localhost:27017 (orderdb)"
 echo "Kafka Broker:    localhost:9094"
 echo "Kafka UI:        http://localhost:8080"

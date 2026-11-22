@@ -13,7 +13,7 @@
     <artifactId>auth-service</artifactId>
     <packaging>jar</packaging>
     <name>auth-service</name>
-    <description>Auth and User Management Service with Clerk Integration and Kafka</description>
+    <description>Native JWT Authentication and User Management Service with Kafka</description>
 
     <dependencies>
         <dependency>

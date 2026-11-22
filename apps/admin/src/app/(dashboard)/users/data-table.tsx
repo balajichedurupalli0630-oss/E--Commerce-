@@ -21,9 +21,9 @@ import {
 import { DataTablePagination } from "@/components/TablePagination";
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth } from "@/context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
-import { User } from "@clerk/nextjs/server";
+import { type User } from "@/lib/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 

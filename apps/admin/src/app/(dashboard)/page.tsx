@@ -3,7 +3,7 @@ import AppBarChart from "@/components/AppBarChart";
 import AppPieChart from "@/components/AppPieChart";
 import CardList from "@/components/CardList";
 import TodoList from "@/components/TodoList";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 
 const Homepage = async () => {
   const { getToken } = await auth();

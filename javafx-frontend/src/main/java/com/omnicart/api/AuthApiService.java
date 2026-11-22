@@ -1,8 +1,11 @@
 package com.omnicart.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.omnicart.config.AppConfig;
+import com.omnicart.config.SessionManager;
 import com.omnicart.model.User;
+import com.omnicart.util.PasswordUtil;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -35,13 +38,37 @@ public class AuthApiService {
     }
 
     private void initMockUsers() {
-        User admin = new User("user_admin_01", "admin", "System", "Admin", "admin@ecom.com", "admin");
+        User admin = new User(
+                "user_admin_01",
+                "admin",
+                "System",
+                "Admin",
+                "admin@ecom.com",
+                "admin",
+                PasswordUtil.hashPassword("admin123")
+        );
         admin.setImageUrl("/users/1.png");
 
-        User customer = new User("user_cust_01", "johndoe", "John", "Doe", "john.doe@example.com", "user");
+        User customer = new User(
+                "user_cust_01",
+                "johndoe",
+                "John",
+                "Doe",
+                "john.doe@example.com",
+                "user",
+                PasswordUtil.hashPassword("password123")
+        );
         customer.setImageUrl("/users/2.png");
 
-        User priya = new User("user_priya", "priya", "Priya", "Sharma", "priya@example.com", "user");
+        User priya = new User(
+                "user_priya",
+                "priya",
+                "Priya",
+                "Sharma",
+                "priya@example.com",
+                "user",
+                PasswordUtil.hashPassword("priya123")
+        );
         priya.setImageUrl("/users/3.png");
 
         mockUsers.put(admin.getUsername().toLowerCase(), admin);
@@ -57,6 +84,14 @@ public class AuthApiService {
                 if (list != null) {
                     for (User u : list) {
                         if (u.getUsername() != null) {
+                            // Ensure default passwords if missing
+                            if (u.getPasswordHash() == null) {
+                                if ("admin".equalsIgnoreCase(u.getUsername())) {
+                                    u.setPasswordHash(PasswordUtil.hashPassword("admin123"));
+                                } else {
+                                    u.setPasswordHash(PasswordUtil.hashPassword("password123"));
+                                }
+                            }
                             mockUsers.put(u.getUsername().toLowerCase(), u);
                         }
                     }
@@ -96,7 +131,7 @@ public class AuthApiService {
     }
 
     public CompletableFuture<User> createUser(String username, String firstName, String lastName, String email, String password) {
-        String url = AppConfig.AUTH_SERVICE_URL + "/users";
+        String url = AppConfig.AUTH_SERVICE_URL + "/auth/register";
         Map<String, Object> body = Map.of(
                 "username", username,
                 "firstName", firstName,
@@ -105,13 +140,33 @@ public class AuthApiService {
                 "password", password
         );
 
-        return apiClient.postAsync(url, body, User.class)
+        return apiClient.postAsync(url, body, JsonNode.class)
+                .thenApply(json -> {
+                    try {
+                        String token = json.has("token") ? json.get("token").asText() : null;
+                        JsonNode userNode = json.has("user") ? json.get("user") : json;
+                        User user = apiClient.getObjectMapper().treeToValue(userNode, User.class);
+                        if (user != null) {
+                            user.setPasswordHash(PasswordUtil.hashPassword(password));
+                            mockUsers.put(user.getUsername().toLowerCase(), user);
+                            saveUsersToDisk();
+                            if (token != null) {
+                                SessionManager.getInstance().setSession(user, token);
+                            }
+                        }
+                        return user;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to parse user from auth service: " + e.getMessage(), e);
+                    }
+                })
                 .exceptionally(ex -> {
+                    // Fallback to local offline registration
                     String stableId = "user_" + username.trim().toLowerCase().replaceAll("[^a-zA-Z0-9]", "_");
-                    User newUser = new User(stableId, username, firstName, lastName, email, "user");
+                    User newUser = new User(stableId, username, firstName, lastName, email, "user", PasswordUtil.hashPassword(password));
                     newUser.setImageUrl("/users/" + (new Random().nextInt(10) + 1) + ".png");
                     mockUsers.put(username.toLowerCase(), newUser);
                     saveUsersToDisk();
+                    SessionManager.getInstance().setSession(newUser, "offline_token_" + newUser.getId());
                     return newUser;
                 });
     }
@@ -127,31 +182,79 @@ public class AuthApiService {
     }
 
     public CompletableFuture<User> authenticate(String username, String password) {
-        return CompletableFuture.supplyAsync(() -> {
-            String uname = username.trim().toLowerCase();
+        if (username == null || username.isBlank() || password == null) {
+            CompletableFuture<User> future = new CompletableFuture<>();
+            future.completeExceptionally(new IllegalArgumentException("Please enter both username and password."));
+            return future;
+        }
 
-            // Check mockUsers store first
-            if (mockUsers.containsKey(uname)) {
-                return mockUsers.get(uname);
-            }
+        String url = AppConfig.AUTH_SERVICE_URL + "/auth/login";
+        Map<String, Object> body = Map.of(
+                "username", username.trim(),
+                "password", password
+        );
 
-            for (User u : mockUsers.values()) {
-                if (u.getUsername() != null && u.getUsername().equalsIgnoreCase(uname)) {
-                    return u;
-                }
-                if (u.getPrimaryEmail() != null && u.getPrimaryEmail().equalsIgnoreCase(uname)) {
-                    return u;
-                }
-            }
+        return apiClient.postAsync(url, body, JsonNode.class)
+                .thenApply(json -> {
+                    try {
+                        String token = json.has("token") ? json.get("token").asText() : null;
+                        JsonNode userNode = json.has("user") ? json.get("user") : json;
+                        User user = apiClient.getObjectMapper().treeToValue(userNode, User.class);
+                        if (user != null) {
+                            user.setPasswordHash(PasswordUtil.hashPassword(password));
+                            mockUsers.put(user.getUsername().toLowerCase(), user);
+                            saveUsersToDisk();
+                            if (token != null) {
+                                SessionManager.getInstance().setSession(user, token);
+                            }
+                        }
+                        return user;
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to parse auth response: " + e.getMessage(), e);
+                    }
+                })
+                .exceptionallyCompose(ex -> {
+                    // Check if error was 401 Unauthorized (invalid credentials returned by backend)
+                    String msg = ex.getMessage() != null ? ex.getMessage() : "";
+                    if (msg.contains("HTTP 401") || msg.contains("401") || msg.contains("Invalid username or password")) {
+                        CompletableFuture<User> failed = new CompletableFuture<>();
+                        failed.completeExceptionally(new IllegalArgumentException("Invalid username or password."));
+                        return failed;
+                    }
 
-            // Create customer on the fly with stable deterministic ID
-            String stableId = "user_" + uname.replaceAll("[^a-zA-Z0-9]", "_");
-            String capName = uname.substring(0, 1).toUpperCase() + (uname.length() > 1 ? uname.substring(1) : "");
-            User created = new User(stableId, username, capName, "", uname + "@example.com", "user");
-            created.setImageUrl("/users/3.png");
-            mockUsers.put(uname, created);
-            saveUsersToDisk();
-            return created;
-        });
+                    // Otherwise backend is offline/unreachable: verify credentials using local offline store
+                    return CompletableFuture.supplyAsync(() -> {
+                        String uname = username.trim().toLowerCase();
+                        User matched = null;
+
+                        if (mockUsers.containsKey(uname)) {
+                            matched = mockUsers.get(uname);
+                        } else {
+                            for (User u : mockUsers.values()) {
+                                if (u.getUsername() != null && u.getUsername().equalsIgnoreCase(uname)) {
+                                    matched = u;
+                                    break;
+                                }
+                                if (u.getPrimaryEmail() != null && u.getPrimaryEmail().equalsIgnoreCase(uname)) {
+                                    matched = u;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (matched == null) {
+                            throw new IllegalArgumentException("User not found. Please sign up or check username.");
+                        }
+
+                        if (matched.getPasswordHash() != null) {
+                            if (!PasswordUtil.verifyPassword(password, matched.getPasswordHash())) {
+                                throw new IllegalArgumentException("Invalid password. Please try again.");
+                            }
+                        }
+
+                        SessionManager.getInstance().setSession(matched, "offline_token_" + matched.getId());
+                        return matched;
+                    });
+                });
     }
 }
