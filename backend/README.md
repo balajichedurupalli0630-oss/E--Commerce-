@@ -1,64 +1,36 @@
-# Java Spring Boot Microservices E-Commerce Platform
+# ⚙️ OmniCart Backend Microservices
 
-A production-ready, event-driven microservices backend rewritten in **Java 21 / Spring Boot 3.4.3** with full API compatibility for the Next.js storefront client and admin dashboard.
-
----
-
-## Architecture & Communication
-
-```mermaid
-graph TD
-  Client["Client Storefront (Next.js 15)<br/>Port 3002"] --> ProductSvc["Product Service (Spring Boot)<br/>Port 8000"]
-  Client --> OrderSvc["Order Service (Spring Boot)<br/>Port 8001"]
-  Client --> PaymentSvc["Payment Service (Spring Boot)<br/>Port 8002"]
-
-  Admin["Admin Dashboard (Next.js 15)<br/>Port 3003"] --> ProductSvc
-  Admin --> OrderSvc
-  Admin --> AuthSvc["Auth Service (Spring Boot)<br/>Port 8003"]
-
-  ProductSvc --> Postgres[(PostgreSQL 16)]
-  OrderSvc --> Mongo[(MongoDB 7)]
-
-  Kafka{{"Apache Kafka Event Bus<br/>KRaft Cluster (Port 9094)"}}
-  
-  ProductSvc -->|Publish: product.created, product.deleted| Kafka
-  PaymentSvc -->|Consume: product.created, product.deleted<br/>Publish: payment.successful| Kafka
-  OrderSvc -->|Consume: payment.successful<br/>Publish: order.created| Kafka
-  EmailSvc["Email Service (Spring Boot Worker)"] -->|Consume: user.created, order.created| Kafka
-  AuthSvc -->|Publish: user.created| Kafka
-```
+A resilient, event-driven microservices backend built with **Java 21 LTS**, **Spring Boot 3.4.3**, **PostgreSQL 16**, and **Apache Kafka**.
 
 ---
 
-## Microservices Breakdown
+## 🏛️ Microservices Breakdown
 
-| Service | Port / Role | Database | Key Responsibilities |
+| Service | Port | Database | Key Responsibilities |
 | :--- | :--- | :--- | :--- |
-| **`common-dto`** | Library | - | Shared DTOs (`ProductDTO`, `OrderDTO`, `CartItemDTO`, etc.) and Kafka event records |
-| **`product-service`** | `http://localhost:8000` | PostgreSQL (`productdb`) | CRUD operations for products & categories, dynamic filtering, Kafka event publishing (`product.created`, `product.deleted`) |
-| **`order-service`** | `http://localhost:8001` | MongoDB (`orderdb`) | User orders, admin order listing, 6-month order aggregation chart, Kafka consumer (`payment.successful`), publisher (`order.created`) |
-| **`payment-service`** | `http://localhost:8002` | - | Native mock checkout session creation, status retrieval, and Kafka event publishing |
-| **`auth-service`** | `http://localhost:8003` | Clerk / In-Memory | User listing, detail, creation, deletion with Clerk API proxy & local fallback, publishes `user.created` to Kafka |
-| **`email-service`** | Background Worker | - | Consumes `user.created` and `order.created` events, sends welcome and order confirmation emails via Spring Mail |
+| **`common-dto`** | Library | - | Immutable Java 21 `record` classes (`ProductDTO`, `OrderItemDTO`, `UserDTO`) and Kafka event contracts |
+| **`product-service`** | `http://localhost:8000` | PostgreSQL (`productdb`) | Product & Category CRUD, dynamic shoe/clothing size associations, Bayesian Gamma-Poisson stochastic demand forecasting |
+| **`order-service`** | `http://localhost:8001` | PostgreSQL (`orderdb`) | JPA order repository, `OrderItemsConverter` for JSON line items, Kafka consumer for `payment.successful`, order cancellation |
+| **`payment-service`** | `http://localhost:8002` | In-Memory / Stateless | Native mock checkout session creation, status retrieval, Kafka publisher for `payment.successful` (Zero Stripe dependency) |
+| **`auth-service`** | `http://localhost:8003` | PostgreSQL (`authdb`) | Native BCrypt password hashing, stateless JWT issuance (`/auth/login`), registration (`/auth/register`), profile validation (`/auth/me`) |
+| **`email-service`** | Worker | - | Asynchronous Kafka consumer for `order.created` and `user.created`, order receipt & welcome dispatching |
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### 1. Start Infrastructure (Docker)
 
-Start PostgreSQL, MongoDB, Kafka, and Kafka UI in the background:
+Start PostgreSQL, Kafka, and Kafka UI in the background:
 
 ```bash
 cd backend
 ./start-services.sh
-# OR manually:
-docker compose up -d
 ```
 
-- **Kafka UI**: [http://localhost:8080](http://localhost:8080)
-- **PostgreSQL**: `localhost:5432` (db: `productdb`, user: `postgres`, pass: `postgres`)
-- **MongoDB**: `localhost:27017` (db: `orderdb`)
+- **Kafka UI Console:** [http://localhost:8080](http://localhost:8080)
+- **PostgreSQL 16:** `localhost:5432` (Username: `postgres`, Password: `postgres`)
+  - Databases initialized: `productdb`, `orderdb`, `authdb`
 
 ---
 
@@ -73,44 +45,36 @@ cd backend
 
 ---
 
-### 3. Run the Services
+### 3. Launch Microservices
 
-You can launch each service either via Maven or by running its packaged JAR:
+Start all 5 microservices as background processes:
 
-#### Option A: Running via Maven
 ```bash
-# Terminal 1: Product Service (Port 8000)
-cd backend/product-service && ../mvnw spring-boot:run
-
-# Terminal 2: Order Service (Port 8001)
-cd backend/order-service && ../mvnw spring-boot:run
-
-# Terminal 3: Payment Service (Port 8002)
-cd backend/payment-service && ../mvnw spring-boot:run
-
-# Terminal 4: Auth Service (Port 8003)
-cd backend/auth-service && ../mvnw spring-boot:run
-
-# Terminal 5: Email Service (Worker)
-cd backend/email-service && ../mvnw spring-boot:run
+./start-apps.sh
 ```
 
-#### Option B: Running Fat JARs
+To stop all services:
 ```bash
-java -jar backend/product-service/target/product-service-1.0.0.jar
-java -jar backend/order-service/target/order-service-1.0.0.jar
-java -jar backend/payment-service/target/payment-service-1.0.0.jar
-java -jar backend/auth-service/target/auth-service-1.0.0.jar
-java -jar backend/email-service/target/email-service-1.0.0.jar
+./stop-apps.sh
+```
+
+To inspect logs in real time:
+```bash
+tail -f logs/product-service.log
+tail -f logs/order-service.log
+tail -f logs/payment-service.log
+tail -f logs/auth-service.log
+tail -f logs/email-service.log
 ```
 
 ---
 
-## Frontend Integration
+## 📨 Kafka Event Topics
 
-The Next.js storefront (`apps/client`, port 3002) and admin dashboard (`apps/admin`, port 3003) connect to these Java services without any API changes:
-
-- `NEXT_PUBLIC_PRODUCT_SERVICE_URL=http://localhost:8000`
-- `NEXT_PUBLIC_ORDER_SERVICE_URL=http://localhost:8001`
-- `NEXT_PUBLIC_PAYMENT_SERVICE_URL=http://localhost:8002`
-- `NEXT_PUBLIC_AUTH_SERVICE_URL=http://localhost:8003`
+| Topic | Producer | Consumer | Payload |
+| :--- | :--- | :--- | :--- |
+| **`payment.successful`** | `payment-service` | `order-service` | `PaymentSuccessfulEvent` (userId, email, amount, products) |
+| **`order.created`** | `order-service` | `email-service` | `OrderCreatedEvent` (orderId, email, amount, status) |
+| **`user.created`** | `auth-service` | `email-service` | `UserCreatedEvent` (userId, username, email) |
+| **`product.created`** | `product-service` | - | `ProductCreatedEvent` (id, name, price, category) |
+| **`product.deleted`** | `product-service` | - | `ProductDeletedEvent` (id) |
