@@ -63,8 +63,6 @@ OmniCart/
 │   ├── client/               # B2C Customer Storefront (:3002)
 │   └── admin/                # B2B Admin Management Web Portal (:3003)
 │
-├── PROJECT_REPORT.md         # 📄 Comprehensive Technical Academic Report (Markdown)
-├── PROJECT_REPORT.html       # 🖨️ Interactive PDF-Ready Technical Report (Browser Print)
 └── run-desktop.sh            # 1-Click Desktop Platform Launcher
 ```
 
@@ -181,11 +179,3 @@ curl -X POST http://localhost:8002/sessions/mock-checkout \
   -d '{"cart":[{"id":1,"name":"Nike Air Max Pulse","price":120,"quantity":1}]}'
 ```
 *Result:* Returns HTTP 200, triggers Kafka event, creates order in PostgreSQL `orderdb.orders`, and logs simulated customer dispatch in `email-service`.
-
----
-
-## 📄 Project Documentation & Technical Report
-
-A technical report formatted according to formal academic guidelines is available in the root directory:
-- **Markdown Document:** [PROJECT_REPORT.md](file:///Users/chinnu/Ecom/PROJECT_REPORT.md)
-- **PDF-Ready HTML:** [PROJECT_REPORT.html](file:///Users/chinnu/Ecom/PROJECT_REPORT.html) (Open in Chrome/Safari, press `Cmd + P` -> "Save as PDF")
