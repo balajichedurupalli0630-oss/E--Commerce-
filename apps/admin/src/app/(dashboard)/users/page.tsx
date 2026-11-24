@@ -1,4 +1,4 @@
-import { auth, type User } from "@clerk/nextjs/server";
+import { auth, type User } from "@/lib/auth-server";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 

@@ -2,6 +2,8 @@ package com.ecom.order.controller;
 
 import com.ecom.dto.OrderChartDTO;
 import com.ecom.dto.OrderDTO;
+import com.ecom.dto.SkuSalesSummaryDTO;
+import com.ecom.order.repository.OrderRepository;
 import com.ecom.order.service.OrderService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 
@@ -21,9 +24,11 @@ public class OrderController {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, OrderRepository orderRepository) {
         this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping("/user-orders")
@@ -71,6 +76,22 @@ public class OrderController {
     @GetMapping("/order-chart")
     public ResponseEntity<List<OrderChartDTO>> getOrderChart() {
         return ResponseEntity.ok(orderService.getOrderChart());
+    }
+
+    @GetMapping({"/analytics/sales-velocity", "/api/orders/analytics/sales-velocity"})
+    public ResponseEntity<List<SkuSalesSummaryDTO>> getSalesVelocity(
+            @RequestParam(defaultValue = "30") int days) {
+        LocalDateTime since = LocalDateTime.now().minusDays(days);
+        List<Object[]> rows = orderRepository.findProductSalesSince(since);
+
+        List<SkuSalesSummaryDTO> summaries = rows.stream()
+                .map(row -> new SkuSalesSummaryDTO(
+                        ((Number) row[0]).longValue(),
+                        ((Number) row[1]).intValue(),
+                        days
+                ))
+                .toList();
+        return ResponseEntity.ok(summaries);
     }
 
     private String extractUserIdFromJwt(String token) {

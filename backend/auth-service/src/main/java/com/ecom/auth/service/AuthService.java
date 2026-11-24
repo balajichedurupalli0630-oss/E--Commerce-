@@ -1,166 +1,190 @@
 package com.ecom.auth.service;
 
+import com.ecom.auth.entity.UserEntity;
+import com.ecom.auth.repository.UserRepository;
+import com.ecom.dto.AuthResponseDTO;
 import com.ecom.dto.CreateUserRequest;
+import com.ecom.dto.LoginRequest;
 import com.ecom.dto.UserDTO;
 import com.ecom.event.UserCreatedEvent;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class AuthService {
 
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
     private final KafkaTemplate<String, Object> kafkaTemplate;
-    private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${clerk.secret.key:}")
-    private String clerkSecretKey;
-
-    // Local fallback store for development
-    private final Map<String, UserDTO> localUserStore = new ConcurrentHashMap<>();
-
-    public AuthService(KafkaTemplate<String, Object> kafkaTemplate) {
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService,
+                       KafkaTemplate<String, Object> kafkaTemplate) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
         this.kafkaTemplate = kafkaTemplate;
-        initMockUsers();
     }
 
-    private void initMockUsers() {
-        UserDTO admin = UserDTO.builder()
-                .id("user_admin_01")
-                .username("admin")
-                .firstName("System")
-                .lastName("Admin")
-                .emailAddresses(List.of(Map.of("email_address", "admin@ecom.com", "id", "email_01")))
-                .publicMetadata(Map.of("role", "admin"))
-                .build();
-        localUserStore.put(admin.getId(), admin);
-    }
+    @PostConstruct
+    public void seedInitialUsers() {
+        if (userRepository.count() == 0) {
+            log.info("Seeding default users into PostgreSQL authdb...");
 
-    public List<UserDTO> getUserList() {
-        if (clerkSecretKey != null && !clerkSecretKey.isBlank()) {
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setBearerAuth(clerkSecretKey);
-                HttpEntity<?> entity = new HttpEntity<>(headers);
-                ResponseEntity<String> response = restTemplate.exchange(
-                        "https://api.clerk.com/v1/users",
-                        HttpMethod.GET,
-                        entity,
-                        String.class
-                );
-                if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                    return objectMapper.readValue(response.getBody(), new TypeReference<List<UserDTO>>() {});
-                }
-            } catch (Exception e) {
-                log.warn("Clerk API call failed, falling back to local user store: {}", e.getMessage());
-            }
+            UserEntity admin = new UserEntity(
+                    "user_admin_01",
+                    "admin",
+                    "admin@ecom.com",
+                    passwordEncoder.encode("admin123"),
+                    "System",
+                    "Admin",
+                    "admin",
+                    "/users/1.png"
+            );
+            userRepository.save(admin);
+
+            UserEntity customer = new UserEntity(
+                    "user_cust_01",
+                    "johndoe",
+                    "john.doe@example.com",
+                    passwordEncoder.encode("password123"),
+                    "John",
+                    "Doe",
+                    "user",
+                    "/users/2.png"
+            );
+            userRepository.save(customer);
+
+            UserEntity priya = new UserEntity(
+                    "user_priya_01",
+                    "priya",
+                    "priya@example.com",
+                    passwordEncoder.encode("password123"),
+                    "Priya",
+                    "Sharma",
+                    "user",
+                    "/users/3.png"
+            );
+            userRepository.save(priya);
+
+            log.info("Default users seeded successfully (admin, johndoe, priya).");
         }
-        return new ArrayList<>(localUserStore.values());
     }
 
-    public UserDTO getUser(String id) {
-        if (clerkSecretKey != null && !clerkSecretKey.isBlank()) {
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setBearerAuth(clerkSecretKey);
-                HttpEntity<?> entity = new HttpEntity<>(headers);
-                ResponseEntity<String> response = restTemplate.exchange(
-                        "https://api.clerk.com/v1/users/" + id,
-                        HttpMethod.GET,
-                        entity,
-                        String.class
-                );
-                if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                    return objectMapper.readValue(response.getBody(), UserDTO.class);
-                }
-            } catch (Exception e) {
-                log.warn("Clerk API getUser failed: {}", e.getMessage());
-            }
+    public AuthResponseDTO login(LoginRequest request) {
+        if (request.getIdentifier() == null || request.getPassword() == null) {
+            throw new IllegalArgumentException("Username/email and password are required");
         }
-        return localUserStore.get(id);
+
+        String identifier = request.getIdentifier().trim().toLowerCase();
+        Optional<UserEntity> userOpt = userRepository.findByUsername(identifier);
+        if (userOpt.isEmpty()) {
+            userOpt = userRepository.findByEmail(identifier);
+        }
+
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
+
+        UserEntity user = userOpt.get();
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
+
+        String token = jwtService.generateToken(user);
+        return new AuthResponseDTO(token, user.toDTO());
     }
 
-    public UserDTO createUser(CreateUserRequest request) {
+    public AuthResponseDTO register(CreateUserRequest request) {
         String email = (request.getEmailAddress() != null && !request.getEmailAddress().isEmpty())
-                ? request.getEmailAddress().get(0)
-                : "user@example.com";
+                ? request.getEmailAddress().get(0).trim().toLowerCase()
+                : (request.getUsername() + "@example.com").toLowerCase();
 
-        UserDTO newUser = UserDTO.builder()
-                .id("user_" + UUID.randomUUID().toString().substring(0, 8))
-                .username(request.getUsername())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .emailAddresses(List.of(Map.of("email_address", email, "id", "email_" + UUID.randomUUID())))
-                .publicMetadata(Map.of("role", "user"))
-                .build();
+        String username = request.getUsername() != null ? request.getUsername().trim().toLowerCase() : email.split("@")[0];
 
-        if (clerkSecretKey != null && !clerkSecretKey.isBlank()) {
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setBearerAuth(clerkSecretKey);
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<CreateUserRequest> entity = new HttpEntity<>(request, headers);
-                ResponseEntity<String> response = restTemplate.exchange(
-                        "https://api.clerk.com/v1/users",
-                        HttpMethod.POST,
-                        entity,
-                        String.class
-                );
-                if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                    newUser = objectMapper.readValue(response.getBody(), UserDTO.class);
-                }
-            } catch (Exception e) {
-                log.warn("Clerk API createUser failed, using local registration: {}", e.getMessage());
-            }
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("Username already in use: " + username);
+        }
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email already in use: " + email);
         }
 
-        localUserStore.put(newUser.getId(), newUser);
+        String rawPassword = (request.getPassword() != null && !request.getPassword().isBlank())
+                ? request.getPassword()
+                : "password123";
+
+        String stableId = "user_" + UUID.randomUUID().toString().substring(0, 8);
+        UserEntity user = new UserEntity(
+                stableId,
+                username,
+                email,
+                passwordEncoder.encode(rawPassword),
+                request.getFirstName() != null ? request.getFirstName() : "",
+                request.getLastName() != null ? request.getLastName() : "",
+                "user",
+                "/users/" + (new Random().nextInt(10) + 1) + ".png"
+        );
+
+        user = userRepository.save(user);
 
         // Publish user.created to Kafka
         try {
             UserCreatedEvent event = UserCreatedEvent.builder()
-                    .username(newUser.getUsername())
+                    .username(user.getUsername())
                     .email(email)
                     .build();
             kafkaTemplate.send("user.created", event);
-            log.info("Published user.created event to Kafka for user {}", newUser.getUsername());
+            log.info("Published user.created event to Kafka for user {}", user.getUsername());
         } catch (Exception e) {
             log.error("Failed to publish user.created event", e);
         }
 
-        return newUser;
+        String token = jwtService.generateToken(user);
+        return new AuthResponseDTO(token, user.toDTO());
+    }
+
+    public List<UserDTO> getUserList() {
+        return userRepository.findAll().stream()
+                .map(UserEntity::toDTO)
+                .toList();
+    }
+
+    public UserDTO getUser(String id) {
+        return userRepository.findById(id)
+                .map(UserEntity::toDTO)
+                .orElse(null);
+    }
+
+    public UserDTO createUser(CreateUserRequest request) {
+        AuthResponseDTO response = register(request);
+        return response.getUser();
     }
 
     public UserDTO deleteUser(String id) {
-        UserDTO removed = localUserStore.remove(id);
-        if (clerkSecretKey != null && !clerkSecretKey.isBlank()) {
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setBearerAuth(clerkSecretKey);
-                HttpEntity<?> entity = new HttpEntity<>(headers);
-                restTemplate.exchange(
-                        "https://api.clerk.com/v1/users/" + id,
-                        HttpMethod.DELETE,
-                        entity,
-                        String.class
-                );
-                log.info("Deleted user {} from Clerk", id);
-            } catch (Exception e) {
-                log.warn("Clerk deleteUser failed: {}", e.getMessage());
-            }
+        Optional<UserEntity> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            UserEntity user = userOpt.get();
+            userRepository.delete(user);
+            return user.toDTO();
         }
-        return removed;
+        return null;
+    }
+
+    public UserDTO getUserFromToken(String token) {
+        if (token == null || !jwtService.validateToken(token)) {
+            return null;
+        }
+        String userId = jwtService.extractUserId(token);
+        return getUser(userId);
     }
 }

@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth-server";
 
 const TestPage = async () => {
   const { getToken } = await auth();

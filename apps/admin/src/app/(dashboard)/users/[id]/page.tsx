@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import EditUser from "@/components/EditUser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/AppLineChart";
-import { auth, User } from "@clerk/nextjs/server";
+import { auth, User } from "@/lib/auth-server";
 
 const getData = async (id: string): Promise<User | null> => {
   const { getToken } = await auth();
@@ -196,7 +196,7 @@ const SingleUserPage = async ({
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Phone:</span>
-                <span>{data.phoneNumbers[0]?.phoneNumber || "-"}</span>
+                <span>{data.phoneNumbers?.[0]?.phoneNumber || "-"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Role:</span>
@@ -208,7 +208,7 @@ const SingleUserPage = async ({
               </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Joined on {new Date(data.createdAt).toLocaleDateString("en-US")}
+              Joined on {data.createdAt ? new Date(data.createdAt).toLocaleDateString("en-US") : "Recently"}
             </p>
           </div>
         </div>

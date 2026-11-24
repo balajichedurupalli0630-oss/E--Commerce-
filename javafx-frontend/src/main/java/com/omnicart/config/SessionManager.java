@@ -52,6 +52,10 @@ public class SessionManager {
         return authToken;
     }
 
+    public void setAuthToken(String token) {
+        this.authToken = token;
+    }
+
     public void setSession(User user, String token) {
         this.currentUser.set(user);
         this.authToken = token;

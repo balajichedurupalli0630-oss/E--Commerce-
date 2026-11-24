@@ -13,15 +13,7 @@ services:
     networks:
       - ecom-network
 
-  mongodb:
-    image: mongo:7-jammy
-    container_name: ecom-mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    networks:
-      - ecom-network
+# mongodb: retired in favor of unified PostgreSQL (orderdb, productdb, authdb)
 
   kafka:
     image: apache/kafka:latest

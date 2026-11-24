@@ -1,33 +1,68 @@
 package com.ecom.order.model;
 
 import com.ecom.dto.OrderItemDTO;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Document(collection = "orders")
+@Entity
+@Table(name = "orders", indexes = {
+        @Index(name = "idx_orders_user_id", columnList = "user_id"),
+        @Index(name = "idx_orders_created_at", columnList = "created_at")
+})
 public class Order {
 
     @Id
+    @Column(name = "id", length = 64)
     private String id;
+
+    @Column(name = "user_id", length = 100)
     private String userId;
+
+    @Column(name = "email", length = 150)
     private String email;
+
+    @Column(name = "amount")
     private Integer amount;
+
+    @Column(name = "status", length = 50)
     private String status;
+
+    @Convert(converter = OrderItemsConverter.class)
+    @Column(name = "products", columnDefinition = "TEXT")
     private List<OrderItemDTO> products = new ArrayList<>();
 
-    @CreatedDate
+    @Column(name = "created_at")
     private Instant createdAt;
 
-    @LastModifiedDate
+    @Column(name = "updated_at")
     private Instant updatedAt;
 
     public Order() {}
+
+    @PrePersist
+    public void onPrePersist() {
+        if (this.id == null || this.id.isBlank()) {
+            this.id = UUID.randomUUID().toString().replace("-", "");
+        }
+        if (this.createdAt == null) {
+            this.createdAt = Instant.now();
+        }
+        if (this.updatedAt == null) {
+            this.updatedAt = Instant.now();
+        }
+        if (this.products == null) {
+            this.products = new ArrayList<>();
+        }
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.updatedAt = Instant.now();
+    }
 
     public static Builder builder() { return new Builder(); }
 
@@ -57,7 +92,7 @@ public class Order {
             order.email = this.email;
             order.amount = this.amount;
             order.status = this.status;
-            order.products = this.products;
+            order.products = this.products != null ? this.products : new ArrayList<>();
             order.createdAt = this.createdAt;
             order.updatedAt = this.updatedAt;
             return order;

@@ -29,7 +29,16 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private Integer price;
+    private Double price;
+
+    @Column(nullable = false)
+    private Double costPrice = 0.0;
+
+    @Column(nullable = false)
+    private Integer stockQuantity = 0;
+
+    @Column(nullable = false)
+    private Integer leadTimeDays = 5; // Default supplier lead time in days
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "product_sizes", joinColumns = @JoinColumn(name = "product_id"))
@@ -69,7 +78,10 @@ public class Product {
         private String name;
         private String shortDescription;
         private String description;
-        private Integer price;
+        private Double price;
+        private Double costPrice = 0.0;
+        private Integer stockQuantity = 0;
+        private Integer leadTimeDays = 5;
         private List<String> sizes = new ArrayList<>();
         private List<String> colors = new ArrayList<>();
         private Map<String, String> images = new HashMap<>();
@@ -79,7 +91,11 @@ public class Product {
         public Builder name(String name) { this.name = name; return this; }
         public Builder shortDescription(String shortDescription) { this.shortDescription = shortDescription; return this; }
         public Builder description(String description) { this.description = description; return this; }
-        public Builder price(Integer price) { this.price = price; return this; }
+        public Builder price(Double price) { this.price = price; return this; }
+        public Builder price(Integer price) { this.price = price != null ? price.doubleValue() : null; return this; }
+        public Builder costPrice(Double costPrice) { this.costPrice = costPrice; return this; }
+        public Builder stockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; return this; }
+        public Builder leadTimeDays(Integer leadTimeDays) { this.leadTimeDays = leadTimeDays; return this; }
         public Builder sizes(List<String> sizes) { this.sizes = sizes; return this; }
         public Builder colors(List<String> colors) { this.colors = colors; return this; }
         public Builder images(Map<String, String> images) { this.images = images; return this; }
@@ -92,6 +108,9 @@ public class Product {
             product.shortDescription = this.shortDescription;
             product.description = this.description;
             product.price = this.price;
+            product.costPrice = this.costPrice != null ? this.costPrice : 0.0;
+            product.stockQuantity = this.stockQuantity != null ? this.stockQuantity : 0;
+            product.leadTimeDays = this.leadTimeDays != null ? this.leadTimeDays : 5;
             product.sizes = this.sizes;
             product.colors = this.colors;
             product.images = this.images;
@@ -108,8 +127,15 @@ public class Product {
     public void setShortDescription(String shortDescription) { this.shortDescription = shortDescription; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public Integer getPrice() { return price; }
-    public void setPrice(Integer price) { this.price = price; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+    public void setPrice(Integer price) { this.price = price != null ? price.doubleValue() : null; }
+    public Double getCostPrice() { return costPrice; }
+    public void setCostPrice(Double costPrice) { this.costPrice = costPrice; }
+    public Integer getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
+    public Integer getLeadTimeDays() { return leadTimeDays; }
+    public void setLeadTimeDays(Integer leadTimeDays) { this.leadTimeDays = leadTimeDays; }
     public List<String> getSizes() { return sizes; }
     public void setSizes(List<String> sizes) { this.sizes = sizes; }
     public List<String> getColors() { return colors; }

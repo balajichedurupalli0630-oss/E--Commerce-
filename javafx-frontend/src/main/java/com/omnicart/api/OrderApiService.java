@@ -10,8 +10,7 @@ import com.omnicart.model.OrderItem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class OrderApiService {
@@ -65,15 +64,28 @@ public class OrderApiService {
                     if (orders != null && !orders.isEmpty()) {
                         orders.forEach(this::recordLocalOrderInternal);
                         saveOrdersToDisk();
+                        return deduplicateOrders(orders);
                     }
                     return filterForUser(localOrders, uid, uname, email);
                 })
                 .exceptionally(ex -> filterForUser(localOrders, uid, uname, email));
     }
 
+    private List<Order> deduplicateOrders(List<Order> list) {
+        if (list == null) return new ArrayList<>();
+        Map<String, Order> map = new LinkedHashMap<>();
+        for (Order o : list) {
+            if (o != null && o.getId() != null) {
+                map.putIfAbsent(o.getId(), o);
+            }
+        }
+        return new ArrayList<>(map.values());
+    }
+
     private List<Order> filterForUser(List<Order> source, String userId, String username, String email) {
         if (source == null) return new ArrayList<>();
-        return source.stream().filter(o -> matchesCustomer(o, userId, username, email)).toList();
+        List<Order> filtered = source.stream().filter(o -> matchesCustomer(o, userId, username, email)).toList();
+        return deduplicateOrders(filtered);
     }
 
     private boolean matchesCustomer(Order o, String userId, String username, String email) {
@@ -96,10 +108,11 @@ public class OrderApiService {
                     if (orders != null && !orders.isEmpty()) {
                         orders.forEach(this::recordLocalOrderInternal);
                         saveOrdersToDisk();
+                        return deduplicateOrders(orders);
                     }
-                    return (List<Order>) new ArrayList<>(localOrders);
+                    return deduplicateOrders(localOrders);
                 })
-                .exceptionally(ex -> (List<Order>) new ArrayList<>(localOrders));
+                .exceptionally(ex -> deduplicateOrders(localOrders));
     }
 
     public CompletableFuture<List<OrderChartData>> getOrderChart() {
@@ -118,13 +131,16 @@ public class OrderApiService {
     public synchronized void recordLocalOrder(Order order) {
         recordLocalOrderInternal(order);
         saveOrdersToDisk();
-        try {
-            apiClient.postAsync(AppConfig.ORDER_SERVICE_URL + "/orders", order, Object.class).exceptionally(ex -> null);
-        } catch (Exception ignored) {}
     }
 
     private synchronized void recordLocalOrderInternal(Order order) {
-        if (order == null) return;
+        if (order == null || order.getId() == null) return;
+        // When real order arrives, clean out any matching temporary mock order
+        if (!order.getId().startsWith("mock_")) {
+            localOrders.removeIf(o -> o.getId() != null && o.getId().startsWith("mock_")
+                    && Objects.equals(o.getAmount(), order.getAmount())
+                    && Objects.equals(o.getEmail(), order.getEmail()));
+        }
         localOrders.removeIf(o -> o.getId() != null && o.getId().equals(order.getId()));
         localOrders.add(0, order);
     }
@@ -149,9 +165,12 @@ public class OrderApiService {
 
     public List<OrderChartData> getFallbackChartData() {
         return List.of(
-                new OrderChartData("January", 186L, 140L), new OrderChartData("February", 305L, 260L),
-                new OrderChartData("March", 237L, 195L), new OrderChartData("April", 173L, 150L),
-                new OrderChartData("May", 209L, 185L), new OrderChartData("June", 214L, 190L)
+                new OrderChartData("June", 0L, 0L, 0.0),
+                new OrderChartData("July", 0L, 0L, 0.0),
+                new OrderChartData("August", 0L, 0L, 0.0),
+                new OrderChartData("September", 0L, 0L, 0.0),
+                new OrderChartData("October", 8L, 8L, 78420.0),
+                new OrderChartData("November", 1L, 1L, 36440.0)
         );
     }
 }

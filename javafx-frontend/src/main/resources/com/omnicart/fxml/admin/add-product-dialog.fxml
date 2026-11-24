@@ -28,8 +28,25 @@
 
             <HBox spacing="16">
                 <VBox spacing="4" HBox.hgrow="ALWAYS">
-                    <Label text="Price (INR) *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                    <Label text="Selling Price (INR) *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
                     <TextField fx:id="priceField" promptText="e.g. 2999.00"/>
+                </VBox>
+
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Buying Cost (INR) *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                    <TextField fx:id="costPriceField" promptText="e.g. 1500.00"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Initial Stock *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                    <TextField fx:id="stockQuantityField" promptText="e.g. 50"/>
+                </VBox>
+
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Supplier Lead Time (Days)" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                    <TextField fx:id="leadTimeField" promptText="Default: 5"/>
                 </VBox>
 
                 <VBox spacing="4" HBox.hgrow="ALWAYS">
@@ -39,7 +56,7 @@
             </HBox>
 
             <VBox spacing="6">
-                <Label text="Available Sizes" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                <Label fx:id="sizesLabel" text="Available Sizes" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
                 <FlowPane fx:id="sizesPane" hgap="12" vgap="8"/>
             </VBox>
 

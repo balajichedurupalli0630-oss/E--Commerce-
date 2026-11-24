@@ -37,7 +37,7 @@ graph TD
 | **`common-dto`** | Library | - | Shared DTOs (`ProductDTO`, `OrderDTO`, `CartItemDTO`, etc.) and Kafka event records |
 | **`product-service`** | `http://localhost:8000` | PostgreSQL (`productdb`) | CRUD operations for products & categories, dynamic filtering, Kafka event publishing (`product.created`, `product.deleted`) |
 | **`order-service`** | `http://localhost:8001` | MongoDB (`orderdb`) | User orders, admin order listing, 6-month order aggregation chart, Kafka consumer (`payment.successful`), publisher (`order.created`) |
-| **`payment-service`** | `http://localhost:8002` | - | Stripe Checkout custom session creation, session status retrieval, Stripe webhook handling, Kafka sync for Stripe products |
+| **`payment-service`** | `http://localhost:8002` | - | Native mock checkout session creation, status retrieval, and Kafka event publishing |
 | **`auth-service`** | `http://localhost:8003` | Clerk / In-Memory | User listing, detail, creation, deletion with Clerk API proxy & local fallback, publishes `user.created` to Kafka |
 | **`email-service`** | Background Worker | - | Consumes `user.created` and `order.created` events, sends welcome and order confirmation emails via Spring Mail |
 

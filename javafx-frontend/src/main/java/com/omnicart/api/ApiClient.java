@@ -40,8 +40,15 @@ public class ApiClient {
     }
 
     private HttpRequest.Builder createRequestBuilder(String url) {
+        String targetUrl = url;
+        if (targetUrl.startsWith("/api/products")) {
+            targetUrl = AppConfig.PRODUCT_SERVICE_URL + targetUrl.substring("/api".length());
+        } else if (targetUrl.startsWith("/")) {
+            targetUrl = AppConfig.PRODUCT_SERVICE_URL + targetUrl;
+        }
+
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(URI.create(targetUrl))
                 .timeout(Duration.ofSeconds(AppConfig.REQUEST_TIMEOUT_SECONDS))
                 .header("Accept", "application/json");
 
@@ -184,5 +191,58 @@ public class ApiClient {
                         throw new RuntimeException("HTTP " + response.statusCode() + ": " + response.body());
                     }
                 });
+    }
+
+    public <T> CompletableFuture<T> patchAsync(String url, Object body, Class<T> responseType) {
+        try {
+            String jsonBody = body != null ? objectMapper.writeValueAsString(body) : "";
+            HttpRequest request = createRequestBuilder(url)
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(response -> {
+                        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                            try {
+                                if (responseType == Void.class || response.body().isBlank()) {
+                                    return null;
+                                }
+                                return objectMapper.readValue(response.body(), responseType);
+                            } catch (Exception e) {
+                                throw new RuntimeException("Failed to parse response: " + e.getMessage(), e);
+                            }
+                        } else {
+                            throw new RuntimeException("HTTP " + response.statusCode() + ": " + response.body());
+                        }
+                    });
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
+    }
+
+    public <T> CompletableFuture<T> patchAsync(String url, Object body, TypeReference<T> typeRef) {
+        try {
+            String jsonBody = body != null ? objectMapper.writeValueAsString(body) : "";
+            HttpRequest request = createRequestBuilder(url)
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(response -> {
+                        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                            try {
+                                return objectMapper.readValue(response.body(), typeRef);
+                            } catch (Exception e) {
+                                throw new RuntimeException("Failed to parse response: " + e.getMessage(), e);
+                            }
+                        } else {
+                            throw new RuntimeException("HTTP " + response.statusCode() + ": " + response.body());
+                        }
+                    });
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
     }
 }

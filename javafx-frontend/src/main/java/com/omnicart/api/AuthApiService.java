@@ -98,23 +98,32 @@ public class AuthApiService {
     }
 
     public CompletableFuture<User> authenticate(String username, String password) {
-        return CompletableFuture.supplyAsync(() -> {
-            String uname = username.trim().toLowerCase();
-            if (mockUsers.containsKey(uname)) return mockUsers.get(uname);
-
-            for (User u : mockUsers.values()) {
-                if (uname.equalsIgnoreCase(u.getUsername()) || uname.equalsIgnoreCase(u.getPrimaryEmail())) {
-                    return u;
-                }
-            }
-
-            String stableId = "user_" + uname.replaceAll("[^a-zA-Z0-9]", "_");
-            String capName = Character.toUpperCase(uname.charAt(0)) + (uname.length() > 1 ? uname.substring(1) : "");
-            User created = new User(stableId, username, capName, "", uname + "@example.com", "user");
-            created.setImageUrl("/users/3.png");
-            mockUsers.put(uname, created);
-            saveUsersToDisk();
-            return created;
-        });
+        Map<String, String> body = Map.of("identifier", username, "password", password);
+        return apiClient.postAsync(AppConfig.AUTH_SERVICE_URL + "/auth/login", body, Map.class)
+                .thenApply(res -> {
+                    if (res != null && res.containsKey("user")) {
+                        try {
+                            String userJson = apiClient.getObjectMapper().writeValueAsString(res.get("user"));
+                            User user = apiClient.getObjectMapper().readValue(userJson, User.class);
+                            if (res.containsKey("token")) {
+                                com.omnicart.config.SessionManager.getInstance().setAuthToken(String.valueOf(res.get("token")));
+                            }
+                            return user;
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    }
+                    return null;
+                })
+                .exceptionally(ex -> {
+                    String uname = username.trim().toLowerCase();
+                    if (mockUsers.containsKey(uname)) return mockUsers.get(uname);
+                    for (User u : mockUsers.values()) {
+                        if (uname.equalsIgnoreCase(u.getUsername()) || uname.equalsIgnoreCase(u.getPrimaryEmail())) {
+                            return u;
+                        }
+                    }
+                    return null;
+                });
     }
 }

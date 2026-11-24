@@ -1,7 +1,10 @@
 package com.ecom.product.controller;
 
 import com.ecom.dto.ProductDTO;
+import com.ecom.dto.ProductRecommendationDTO;
+import com.ecom.product.model.Product;
 import com.ecom.product.service.ProductService;
+import com.ecom.product.service.StochasticFinancialEngineService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +16,11 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final StochasticFinancialEngineService financialEngineService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, StochasticFinancialEngineService financialEngineService) {
         this.productService = productService;
+        this.financialEngineService = financialEngineService;
     }
 
     @GetMapping
@@ -49,5 +54,20 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productService.deleteProduct(id));
+    }
+
+    @GetMapping("/recommendations")
+    public ResponseEntity<List<ProductRecommendationDTO>> getRecommendations() {
+        return ResponseEntity.ok(financialEngineService.generateAllRecommendations());
+    }
+
+    @PatchMapping("/{id}/apply-price")
+    public ResponseEntity<Product> applyPrice(@PathVariable Long id, @RequestParam Double price) {
+        return ResponseEntity.ok(financialEngineService.applyRecommendedPrice(id, price));
+    }
+
+    @PatchMapping("/{id}/restock")
+    public ResponseEntity<Product> restock(@PathVariable Long id, @RequestParam Integer quantity) {
+        return ResponseEntity.ok(financialEngineService.restockProduct(id, quantity));
     }
 }

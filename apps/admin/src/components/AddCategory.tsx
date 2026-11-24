@@ -9,7 +9,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { CategoryFormSchema } from "@repo/types";
 import { useMutation } from "@tanstack/react-query";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth } from "@/lib/auth";
 import { toast } from "react-toastify";
 
 const AddCategory = () => {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.omnicart.config.AppConfig;
 import com.omnicart.model.Category;
 import com.omnicart.model.Product;
+import com.omnicart.model.ProductRecommendation;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -63,6 +64,20 @@ public class ProductApiService {
 
     public CompletableFuture<Product> deleteProduct(Long id) {
         return apiClient.deleteAsync(AppConfig.PRODUCT_SERVICE_URL + "/products/" + id, Product.class);
+    }
+
+    public CompletableFuture<List<ProductRecommendation>> getRecommendations() {
+        return apiClient.getAsync("/api/products/recommendations", new TypeReference<List<ProductRecommendation>>() {});
+    }
+
+    public CompletableFuture<Product> applyRecommendedPrice(Long productId, Double newPrice) {
+        String endpoint = String.format(Locale.US, "/api/products/%d/apply-price?price=%.2f", productId, newPrice);
+        return apiClient.patchAsync(endpoint, null, Product.class);
+    }
+
+    public CompletableFuture<Product> restockProduct(Long productId, Integer quantity) {
+        String endpoint = String.format("/api/products/%d/restock?quantity=%d", productId, quantity);
+        return apiClient.patchAsync(endpoint, null, Product.class);
     }
 
     public CompletableFuture<List<Category>> getCategories() {

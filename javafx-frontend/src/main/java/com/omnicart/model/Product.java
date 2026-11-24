@@ -22,6 +22,9 @@ public class Product {
     private Category category;
     private Instant createdAt;
     private Instant updatedAt;
+    private Double costPrice;
+    private Integer stockQuantity;
+    private Integer leadTimeDays;
 
     public Product() {}
 
@@ -75,6 +78,15 @@ public class Product {
 
     public Instant getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
+
+    public Double getCostPrice() { return costPrice; }
+    public void setCostPrice(Double costPrice) { this.costPrice = costPrice; }
+
+    public Integer getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
+
+    public Integer getLeadTimeDays() { return leadTimeDays; }
+    public void setLeadTimeDays(Integer leadTimeDays) { this.leadTimeDays = leadTimeDays; }
 
     /**
      * Resolves display price in INR (if backend returned cents > 1000, adjust to decimal, else decimal directly).

@@ -13,7 +13,7 @@
     <artifactId>payment-service</artifactId>
     <packaging>jar</packaging>
     <name>payment-service</name>
-    <description>Payment Service with Stripe and Kafka</description>
+    <description>Payment Service with Native Mock Payment and Kafka</description>
 
     <dependencies>
         <dependency>
@@ -23,10 +23,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.stripe</groupId>
-            <artifactId>stripe-java</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.kafka</groupId>

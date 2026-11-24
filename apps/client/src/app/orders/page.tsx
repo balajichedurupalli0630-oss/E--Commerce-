@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth-server";
 import { OrderType } from "@repo/types";
 
 const fetchOrders = async () => {

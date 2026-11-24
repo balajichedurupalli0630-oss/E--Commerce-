@@ -14,7 +14,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { CategoryType, clothingSizes, colors, ProductFormSchema, shoeSizes } from "@repo/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 
 const fetchCategories = async () => {

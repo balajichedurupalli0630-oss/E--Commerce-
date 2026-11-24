@@ -77,7 +77,10 @@ public class ProductService {
                 .name(dto.getName())
                 .shortDescription(dto.getShortDescription())
                 .description(dto.getDescription())
-                .price(dto.getPrice())
+                .price(dto.getPrice() != null ? dto.getPrice().doubleValue() : (dto.getCostPrice() != null ? dto.getCostPrice() : 0.0))
+                .costPrice(dto.getCostPrice() != null ? dto.getCostPrice() : 0.0)
+                .stockQuantity(dto.getStockQuantity() != null ? dto.getStockQuantity() : 0)
+                .leadTimeDays(dto.getLeadTimeDays() != null ? dto.getLeadTimeDays() : 5)
                 .categorySlug(dto.getCategorySlug())
                 .sizes(dto.getSizes() != null ? new ArrayList<>(dto.getSizes()) : new ArrayList<>())
                 .colors(dto.getColors() != null ? new ArrayList<>(dto.getColors()) : new ArrayList<>())
@@ -89,7 +92,7 @@ public class ProductService {
         sendEvent("product.created", ProductCreatedEvent.builder()
                 .id(savedProduct.getId().toString())
                 .name(savedProduct.getName())
-                .price(savedProduct.getPrice())
+                .price(savedProduct.getPrice() != null ? savedProduct.getPrice().intValue() : 0)
                 .build(), savedProduct.getId());
 
         return toDTO(savedProduct);
@@ -103,7 +106,10 @@ public class ProductService {
         if (dto.getName() != null) product.setName(dto.getName());
         if (dto.getShortDescription() != null) product.setShortDescription(dto.getShortDescription());
         if (dto.getDescription() != null) product.setDescription(dto.getDescription());
-        if (dto.getPrice() != null) product.setPrice(dto.getPrice());
+        if (dto.getPrice() != null) product.setPrice(dto.getPrice().doubleValue());
+        if (dto.getCostPrice() != null) product.setCostPrice(dto.getCostPrice());
+        if (dto.getStockQuantity() != null) product.setStockQuantity(dto.getStockQuantity());
+        if (dto.getLeadTimeDays() != null) product.setLeadTimeDays(dto.getLeadTimeDays());
         if (dto.getCategorySlug() != null) product.setCategorySlug(dto.getCategorySlug());
         if (dto.getSizes() != null) product.setSizes(new ArrayList<>(dto.getSizes()));
         if (dto.getColors() != null) product.setColors(new ArrayList<>(dto.getColors()));
@@ -132,7 +138,10 @@ public class ProductService {
                 .name(product.getName())
                 .shortDescription(product.getShortDescription())
                 .description(product.getDescription())
-                .price(product.getPrice())
+                .price(product.getPrice() != null ? product.getPrice().intValue() : null)
+                .costPrice(product.getCostPrice())
+                .stockQuantity(product.getStockQuantity())
+                .leadTimeDays(product.getLeadTimeDays())
                 .sizes(product.getSizes())
                 .colors(product.getColors())
                 .images(product.getImages())

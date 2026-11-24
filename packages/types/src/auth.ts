@@ -6,6 +6,21 @@ export interface CustomJwtSessionClaims {
   };
 }
 
+export type UserType = {
+  id: string;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+  imageUrl?: string;
+  email?: string;
+  emailAddresses: Array<{ emailAddress?: string; email_address?: string; id?: string }>;
+  phoneNumbers?: Array<{ phoneNumber?: string; id?: string }>;
+  publicMetadata: { role?: "user" | "admin" };
+  banned?: boolean;
+  createdAt?: string | number | Date;
+  updatedAt?: string | number | Date;
+};
+
 export const UserFormSchema = z.object({
   firstName: z
     .string({ message: "First name is required!" })

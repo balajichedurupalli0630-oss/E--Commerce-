@@ -124,9 +124,9 @@ export const columns: ColumnDef<OrderType>[] = [
             <DropdownMenuItem
               className="text-red-600 focus:text-red-600 cursor-pointer"
               onClick={async () => {
-                if (window.confirm(Are you sure you want to cancel order ${order._id}?)) {
+                if (window.confirm(`Are you sure you want to cancel order ${order._id}?`)) {
                   try {
-                    await fetch(${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL || "http://localhost:8001"}/orders//cancel, {
+                    await fetch(`${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL || "http://localhost:8001"}/orders/${order._id}/cancel`, {
                       method: "PUT",
                     });
                     window.location.reload();

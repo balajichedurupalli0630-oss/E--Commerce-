@@ -108,11 +108,18 @@ public class OrderService {
             Instant monthEnd = targetMonth.atEndOfMonth().atTime(23, 59, 59).toInstant(ZoneOffset.UTC);
 
             long total = 0, successful = 0;
+            double revenue = 0.0;
             for (Order o : recentOrders) {
                 Instant c = o.getCreatedAt();
                 if (c != null && !c.isBefore(monthStart) && !c.isAfter(monthEnd)) {
                     total++;
-                    if ("success".equalsIgnoreCase(o.getStatus())) successful++;
+                    if ("success".equalsIgnoreCase(o.getStatus())) {
+                        successful++;
+                        if (o.getAmount() != null) {
+                            double inr = o.getAmount() >= 100000 ? o.getAmount() / 100.0 : o.getAmount().doubleValue();
+                            revenue += inr;
+                        }
+                    }
                 }
             }
 
@@ -120,6 +127,7 @@ public class OrderService {
                     .month(targetMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH))
                     .total(total)
                     .successful(successful)
+                    .revenue(revenue)
                     .build());
         }
 

@@ -2,6 +2,16 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR"
 
+# Ensure Java runtime is found
+if ! command -v java &>/dev/null; then
+  if [ -d "/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home" ]; then
+    export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home"
+    export PATH="$JAVA_HOME/bin:$PATH"
+  elif [ -n "$JAVA_HOME" ] && [ -x "$JAVA_HOME/bin/java" ]; then
+    export PATH="$JAVA_HOME/bin:$PATH"
+  fi
+fi
+
 mkdir -p logs
 
 echo "=== Starting E-Commerce Java Microservices ==="

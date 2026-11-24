@@ -17,9 +17,3 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-
-stripe:
-  secret:
-    key: ${STRIPE_SECRET_KEY:sk_test_placeholder}
-  webhook:
-    secret: ${STRIPE_WEBHOOK_SECRET:whsec_placeholder}

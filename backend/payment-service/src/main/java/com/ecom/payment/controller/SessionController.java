@@ -2,8 +2,7 @@ package com.ecom.payment.controller;
 
 import com.ecom.dto.CheckoutSessionRequest;
 import com.ecom.dto.CheckoutSessionResponse;
-import com.ecom.dto.SessionStatusResponse;
-import com.ecom.payment.service.StripeService;
+import com.ecom.payment.service.PaymentService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -22,10 +21,10 @@ public class SessionController {
     private static final Logger log = LoggerFactory.getLogger(SessionController.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final StripeService stripeService;
+    private final PaymentService paymentService;
 
-    public SessionController(StripeService stripeService) {
-        this.stripeService = stripeService;
+    public SessionController(PaymentService paymentService) {
+        this.paymentService = paymentService;
     }
 
     @PostMapping("/create-checkout-session")
@@ -34,7 +33,7 @@ public class SessionController {
             @RequestHeader(value = "Authorization", required = false) String authHeader,
             @RequestHeader(value = "x-user-id", required = false) String headerUserId) {
         try {
-            String clientSecret = stripeService.createCheckoutSession(request.getCart(), resolveUserId(headerUserId, authHeader));
+            String clientSecret = paymentService.createCheckoutSession(request.getCart(), resolveUserId(headerUserId, authHeader));
             return ResponseEntity.ok(new CheckoutSessionResponse(clientSecret));
         } catch (Exception e) {
             log.error("Error creating checkout session", e);
@@ -50,7 +49,7 @@ public class SessionController {
             @RequestParam(value = "email", required = false) String email) {
         try {
             long now = System.currentTimeMillis();
-            stripeService.publishMockPayment(request.getCart(), resolveUserId(headerUserId, authHeader), email != null ? email : "customer@example.com");
+            paymentService.publishMockPayment(request.getCart(), resolveUserId(headerUserId, authHeader), email != null ? email : "customer@example.com");
             return ResponseEntity.ok(Map.of("status", "success", "sessionId", "mock_" + now, "checkoutSessionClientSecret", "mock_secret_" + now));
         } catch (Exception e) {
             log.error("Error creating mock checkout", e);
@@ -61,7 +60,7 @@ public class SessionController {
     @GetMapping("/{session_id}")
     public ResponseEntity<?> getSession(@PathVariable("session_id") String sessionId) {
         try {
-            return ResponseEntity.ok(stripeService.getSessionStatus(sessionId));
+            return ResponseEntity.ok(paymentService.getSessionStatus(sessionId));
         } catch (Exception e) {
             log.error("Error retrieving session {}", sessionId, e);
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));

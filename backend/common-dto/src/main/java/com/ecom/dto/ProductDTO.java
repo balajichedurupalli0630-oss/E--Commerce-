@@ -15,6 +15,9 @@ public class ProductDTO {
     private Map<String, String> images;
     private String categorySlug;
     private CategoryDTO category;
+    private Double costPrice;
+    private Integer stockQuantity;
+    private Integer leadTimeDays;
     private Instant createdAt;
     private Instant updatedAt;
 
@@ -22,10 +25,13 @@ public class ProductDTO {
 
     public ProductDTO(Long id, String name, String shortDescription, String description, Integer price,
                       List<String> sizes, List<String> colors, Map<String, String> images,
-                      String categorySlug, CategoryDTO category, Instant createdAt, Instant updatedAt) {
+                      String categorySlug, CategoryDTO category, Double costPrice, Integer stockQuantity,
+                      Integer leadTimeDays, Instant createdAt, Instant updatedAt) {
         this.id = id; this.name = name; this.shortDescription = shortDescription; this.description = description;
         this.price = price; this.sizes = sizes; this.colors = colors; this.images = images;
-        this.categorySlug = categorySlug; this.category = category; this.createdAt = createdAt; this.updatedAt = updatedAt;
+        this.categorySlug = categorySlug; this.category = category; this.costPrice = costPrice;
+        this.stockQuantity = stockQuantity; this.leadTimeDays = leadTimeDays;
+        this.createdAt = createdAt; this.updatedAt = updatedAt;
     }
 
     public static Builder builder() { return new Builder(); }
@@ -38,11 +44,15 @@ public class ProductDTO {
         public Builder shortDescription(String shortDescription) { dto.shortDescription = shortDescription; return this; }
         public Builder description(String description) { dto.description = description; return this; }
         public Builder price(Integer price) { dto.price = price; return this; }
+        public Builder price(Double price) { dto.price = price != null ? price.intValue() : null; return this; }
         public Builder sizes(List<String> sizes) { dto.sizes = sizes; return this; }
         public Builder colors(List<String> colors) { dto.colors = colors; return this; }
         public Builder images(Map<String, String> images) { dto.images = images; return this; }
         public Builder categorySlug(String categorySlug) { dto.categorySlug = categorySlug; return this; }
         public Builder category(CategoryDTO category) { dto.category = category; return this; }
+        public Builder costPrice(Double costPrice) { dto.costPrice = costPrice; return this; }
+        public Builder stockQuantity(Integer stockQuantity) { dto.stockQuantity = stockQuantity; return this; }
+        public Builder leadTimeDays(Integer leadTimeDays) { dto.leadTimeDays = leadTimeDays; return this; }
         public Builder createdAt(Instant createdAt) { dto.createdAt = createdAt; return this; }
         public Builder updatedAt(Instant updatedAt) { dto.updatedAt = updatedAt; return this; }
 
@@ -59,6 +69,7 @@ public class ProductDTO {
     public void setDescription(String description) { this.description = description; }
     public Integer getPrice() { return price; }
     public void setPrice(Integer price) { this.price = price; }
+    public void setPrice(Double price) { this.price = price != null ? price.intValue() : null; }
     public List<String> getSizes() { return sizes; }
     public void setSizes(List<String> sizes) { this.sizes = sizes; }
     public List<String> getColors() { return colors; }
@@ -69,6 +80,12 @@ public class ProductDTO {
     public void setCategorySlug(String categorySlug) { this.categorySlug = categorySlug; }
     public CategoryDTO getCategory() { return category; }
     public void setCategory(CategoryDTO category) { this.category = category; }
+    public Double getCostPrice() { return costPrice; }
+    public void setCostPrice(Double costPrice) { this.costPrice = costPrice; }
+    public Integer getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
+    public Integer getLeadTimeDays() { return leadTimeDays; }
+    public void setLeadTimeDays(Integer leadTimeDays) { this.leadTimeDays = leadTimeDays; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
