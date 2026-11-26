@@ -3,14 +3,19 @@ package com.omnicart.controller.admin;
 import com.omnicart.api.ProductApiService;
 import com.omnicart.model.Category;
 import com.omnicart.model.Product;
+import com.omnicart.service.ImageLoaderService;
 import com.omnicart.service.ToastService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
@@ -19,6 +24,8 @@ public class AddProductDialogController implements Initializable {
     @FXML private TextField nameField;
     @FXML private TextField shortDescField;
     @FXML private TextArea descField;
+    @FXML private TextField imageField;
+    @FXML private ImageView imagePreview;
     @FXML private TextField priceField;
     @FXML private TextField costPriceField;
     @FXML private TextField stockQuantityField;
@@ -36,6 +43,14 @@ public class AddProductDialogController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         errorLabel.setVisible(false);
+
+        // Default initial image
+        imageField.setText("/products/1g.png");
+        updateImagePreview("/products/1g.png");
+
+        imageField.textProperty().addListener((obs, oldVal, newVal) -> {
+            updateImagePreview(newVal);
+        });
 
         // Update sizes dynamically when category changes
         categoryComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -64,6 +79,50 @@ public class AddProductDialogController implements Initializable {
             colorCheckboxes.add(cb);
             colorsPane.getChildren().add(cb);
         }
+    }
+
+    private void updateImagePreview(String path) {
+        if (imagePreview == null) return;
+        if (path == null || path.isBlank()) {
+            imagePreview.setImage(null);
+            return;
+        }
+        try {
+            Image img = ImageLoaderService.loadImage(path.trim());
+            imagePreview.setImage(img);
+        } catch (Exception e) {
+            imagePreview.setImage(null);
+        }
+    }
+
+    @FXML
+    private void onBrowseImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Product Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files (*.png, *.jpg, *.jpeg, *.webp)", "*.png", "*.jpg", "*.jpeg", "*.webp"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        Stage stage = (Stage) saveBtn.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            imageField.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void onSelectSample1() {
+        imageField.setText("/products/1g.png");
+    }
+
+    @FXML
+    private void onSelectSample2() {
+        imageField.setText("/products/2g.png");
+    }
+
+    @FXML
+    private void onSelectSample3() {
+        imageField.setText("/products/8b.png");
     }
 
     private void updateSizesForCategory(Category cat) {
@@ -100,10 +159,17 @@ public class AddProductDialogController implements Initializable {
         String shortDesc = shortDescField.getText().trim();
         String desc = descField.getText().trim();
         String priceText = priceField.getText().trim();
+        String imagePath = imageField.getText() != null ? imageField.getText().trim() : "";
         Category cat = categoryComboBox.getValue();
 
         if (name.isEmpty() || shortDesc.isEmpty() || priceText.isEmpty() || cat == null) {
             errorLabel.setText("Please fill out all required fields.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (imagePath.isEmpty()) {
+            errorLabel.setText("Please specify a product image URL or file.");
             errorLabel.setVisible(true);
             return;
         }
@@ -141,7 +207,7 @@ public class AddProductDialogController implements Initializable {
             if (cb.isSelected()) {
                 String color = cb.getText();
                 selectedColors.add(color);
-                images.put(color, "/products/1g.png");
+                images.put(color, imagePath);
             }
         }
 
@@ -168,8 +234,10 @@ public class AddProductDialogController implements Initializable {
         }).exceptionally(ex -> {
             Platform.runLater(() -> {
                 saveBtn.setDisable(false);
-                ToastService.showSuccess("Product added to local catalogue!");
-                closeDialog();
+                String msg = ex != null ? (ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage()) : "Unknown error";
+                errorLabel.setText("Failed to create product: " + msg);
+                errorLabel.setVisible(true);
+                ToastService.showError("Failed to add product: " + msg);
             });
             return null;
         });

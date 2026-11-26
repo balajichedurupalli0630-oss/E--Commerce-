@@ -1,186 +1,184 @@
 [ {
-  "userId" : "user_3LFH7SkYOcBu5FH7hlfp1z8x9kL",
-  "email" : "maheshchedurupalli47@gmail.com",
-  "amount" : 1648000,
-  "status" : "success",
-  "products" : [ {
-    "name" : " Nike White Sneakers ",
-    "quantity" : 1,
-    "price" : 200000
-  }, {
-    "name" : "Champion Eco Weave Hoodie",
-    "quantity" : 1,
-    "price" : 549000
-  }, {
-    "name" : "Columbia Alpine Thermal Jacket",
-    "quantity" : 1,
-    "price" : 899000
-  } ],
-  "createdAt" : 1793075664.182000000,
-  "updatedAt" : 1793075664.182000000,
-  "effectiveAmount" : 16480.0,
-  "productsSummary" : " Nike White Sneakers , Champion Eco Weave Hoodie, Columbia Alpine Thermal Jacket",
-  "_id" : "6ae029d08e83752e433ceec8"
-}, {
-  "userId" : "guest_user",
-  "email" : "testuser@omnicart.com",
-  "amount" : 200000,
-  "status" : "success",
-  "products" : [ {
-    "name" : "Nike White Sneakers",
-    "quantity" : 1,
-    "price" : 200000
-  } ],
-  "createdAt" : 1793087015.402000000,
-  "updatedAt" : 1793087015.402000000,
-  "effectiveAmount" : 2000.0,
-  "productsSummary" : "Nike White Sneakers",
-  "_id" : "6ae056278e83752e433ceec9"
-}, {
-  "userId" : "user_3LFH7SkYOcBu5FH7hlfp1z8x9kL",
-  "email" : "maheshchedurupalli47@gmail.com",
-  "amount" : 1099000,
-  "status" : "success",
-  "products" : [ {
-    "name" : " Nike White Sneakers ",
-    "quantity" : 1,
-    "price" : 200000
-  }, {
-    "name" : "Columbia Alpine Thermal Jacket",
-    "quantity" : 1,
-    "price" : 899000
-  } ],
-  "createdAt" : 1793096221.942000000,
-  "updatedAt" : 1793096221.942000000,
-  "effectiveAmount" : 10990.0,
-  "productsSummary" : " Nike White Sneakers , Columbia Alpine Thermal Jacket",
-  "_id" : "6ae07a1d8e83752e433ceeca"
-}, {
-  "userId" : "guest_user",
-  "email" : "maheshchedurupalli47@gmail.com",
-  "amount" : 1398000,
-  "status" : "success",
-  "products" : [ {
-    "name" : " Nike White Sneakers ",
-    "quantity" : 1,
-    "price" : 200000
-  }, {
-    "name" : "Columbia Alpine Thermal Jacket",
-    "quantity" : 1,
-    "price" : 899000
-  }, {
-    "name" : "Nike Dri Flex T-Shirt",
-    "quantity" : 1,
-    "price" : 299000
-  } ],
-  "createdAt" : 1793097478.714000000,
-  "updatedAt" : 1793097478.714000000,
-  "effectiveAmount" : 13980.0,
-  "productsSummary" : " Nike White Sneakers , Columbia Alpine Thermal Jacket, Nike Dri Flex T-Shirt",
-  "_id" : "6ae07f068e83752e433ceecb"
-}, {
-  "userId" : "user_cust_01",
-  "email" : "john.doe@example.com",
-  "amount" : 3644000,
-  "status" : "success",
-  "products" : [ {
-    "name" : "Columbia Alpine Thermal Jacket",
-    "quantity" : 1,
-    "price" : 899000
-  }, {
-    "name" : " Nike White Sneakers ",
-    "quantity" : 1,
-    "price" : 200000
-  }, {
-    "name" : "Reebok Heritage Sweatshirt",
-    "quantity" : 1,
-    "price" : 449000
-  }, {
-    "name" : "Nike Dri Flex T-Shirt",
-    "quantity" : 1,
-    "price" : 299000
-  }, {
-    "name" : "Under Armour StormFleece",
-    "quantity" : 1,
-    "price" : 499000
-  }, {
-    "name" : "Nike Air Essentials Pullover",
-    "quantity" : 1,
-    "price" : 699000
-  }, {
-    "name" : "Puma Ultra Warm Zip",
-    "quantity" : 1,
-    "price" : 599000
-  } ],
-  "createdAt" : 1795503018.886000000,
-  "updatedAt" : 1795503018.886000000,
-  "effectiveAmount" : 36440.0,
-  "productsSummary" : "Columbia Alpine Thermal Jacket,  Nike White Sneakers , Reebok Heritage Sweatshirt, Nike Dri Flex T-Shirt, Under Armour StormFleece, Nike Air Essentials Pullover, Puma Ultra Warm Zip",
-  "_id" : "6b0533aa8ef0a80b74cdabe8"
-}, {
-  "userId" : "user_3LFH7SkYOcBu5FH7hlfp1z8x9kL",
-  "email" : "maheshchedurupalli47@gmail.com",
-  "amount" : 1348000,
-  "status" : "success",
-  "products" : [ {
-    "name" : "Columbia Alpine Thermal Jacket",
-    "quantity" : 1,
-    "price" : 899000
-  }, {
-    "name" : "Reebok Heritage Sweatshirt",
-    "quantity" : 1,
-    "price" : 449000
-  } ],
-  "createdAt" : 1793075558.470000000,
-  "updatedAt" : 1793075558.470000000,
-  "effectiveAmount" : 13480.0,
-  "productsSummary" : "Columbia Alpine Thermal Jacket, Reebok Heritage Sweatshirt",
-  "_id" : "6ae029668e83752e433ceec7"
-}, {
   "userId" : "guest_user",
   "email" : "customer@example.com",
   "amount" : 200000,
   "status" : "success",
-  "products" : [ {
-    "name" : "Nike White Sneakers",
-    "quantity" : 1,
-    "price" : 200000
-  } ],
+  "products" : [ ],
   "createdAt" : 1793046556.486000000,
   "updatedAt" : 1793046556.486000000,
   "effectiveAmount" : 2000.0,
-  "productsSummary" : "Nike White Sneakers",
+  "productsSummary" : "-",
   "_id" : "6adfb81c8e83752e433ceec4"
 }, {
   "userId" : "guest_user",
   "email" : "customer@example.com",
   "amount" : 200000,
   "status" : "success",
-  "products" : [ {
-    "name" : "Nike White Sneakers",
-    "quantity" : 1,
-    "price" : 200000
-  } ],
+  "products" : [ ],
   "createdAt" : 1793046711.284000000,
   "updatedAt" : 1793046711.284000000,
   "effectiveAmount" : 2000.0,
-  "productsSummary" : "Nike White Sneakers",
+  "productsSummary" : "-",
   "_id" : "6adfb8b78e83752e433ceec5"
 }, {
   "userId" : "user_3LFH7SkYOcBu5FH7hlfp1z8x9kL",
   "email" : "balaji_chedurupalli@srmap.edu.in",
   "amount" : 200000,
   "status" : "success",
-  "products" : [ {
-    "name" : " Nike White Sneakers ",
-    "quantity" : 1,
-    "price" : 200000
-  } ],
+  "products" : [ ],
   "createdAt" : 1793046775.722000000,
   "updatedAt" : 1793046775.722000000,
   "effectiveAmount" : 2000.0,
-  "productsSummary" : " Nike White Sneakers ",
+  "productsSummary" : "-",
   "_id" : "6adfb8f78e83752e433ceec6"
+}, {
+  "userId" : "user_3LFH7SkYOcBu5FH7hlfp1z8x9kL",
+  "email" : "maheshchedurupalli47@gmail.com",
+  "amount" : 1348000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1793075558.470000000,
+  "updatedAt" : 1793075558.470000000,
+  "effectiveAmount" : 13480.0,
+  "productsSummary" : "-",
+  "_id" : "6ae029668e83752e433ceec7"
+}, {
+  "userId" : "user_3LFH7SkYOcBu5FH7hlfp1z8x9kL",
+  "email" : "maheshchedurupalli47@gmail.com",
+  "amount" : 1648000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1793075664.182000000,
+  "updatedAt" : 1793075664.182000000,
+  "effectiveAmount" : 16480.0,
+  "productsSummary" : "-",
+  "_id" : "6ae029d08e83752e433ceec8"
+}, {
+  "userId" : "guest_user",
+  "email" : "testuser@omnicart.com",
+  "amount" : 200000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1793087015.402000000,
+  "updatedAt" : 1793087015.402000000,
+  "effectiveAmount" : 2000.0,
+  "productsSummary" : "-",
+  "_id" : "6ae056278e83752e433ceec9"
+}, {
+  "userId" : "user_3LFH7SkYOcBu5FH7hlfp1z8x9kL",
+  "email" : "maheshchedurupalli47@gmail.com",
+  "amount" : 1099000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1793096221.942000000,
+  "updatedAt" : 1793096221.942000000,
+  "effectiveAmount" : 10990.0,
+  "productsSummary" : "-",
+  "_id" : "6ae07a1d8e83752e433ceeca"
+}, {
+  "userId" : "guest_user",
+  "email" : "maheshchedurupalli47@gmail.com",
+  "amount" : 1398000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1793097478.714000000,
+  "updatedAt" : 1793097478.714000000,
+  "effectiveAmount" : 13980.0,
+  "productsSummary" : "-",
+  "_id" : "6ae07f068e83752e433ceecb"
+}, {
+  "userId" : "user_cust_01",
+  "email" : "john.doe@example.com",
+  "amount" : 3644000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1795503018.886000000,
+  "updatedAt" : 1795503018.886000000,
+  "effectiveAmount" : 36440.0,
+  "productsSummary" : "-",
+  "_id" : "6b0533aa8ef0a80b74cdabe8"
+}, {
+  "userId" : "guest_user",
+  "email" : "customer@example.com",
+  "amount" : 150000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1795516986.011662000,
+  "updatedAt" : 1795516986.030955000,
+  "effectiveAmount" : 1500.0,
+  "productsSummary" : "-",
+  "_id" : "177cb5f59aa644c59d951d5d698b7f2f"
+}, {
+  "userId" : "usr_verified_clean",
+  "email" : "customer@example.com",
+  "amount" : 12000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1795518424.619818000,
+  "updatedAt" : 1795518424.626541000,
+  "effectiveAmount" : 12000.0,
+  "productsSummary" : "-",
+  "_id" : "7e55f9a7de2245298d265d5876c9dd48"
+}, {
+  "userId" : "user_cust_01",
+  "email" : "john.doe@example.com",
+  "amount" : 899000,
+  "status" : "success",
+  "products" : [ ],
+  "createdAt" : 1795694484.939364000,
+  "updatedAt" : 1795694484.939366000,
+  "effectiveAmount" : 8990.0,
+  "productsSummary" : "-",
+  "_id" : "2e3e559bb74c41dc984638abcc6a7fce"
+}, {
+  "userId" : "usr_relational_test",
+  "email" : "customer@example.com",
+  "amount" : 49000,
+  "status" : "success",
+  "products" : [ {
+    "name" : "Nike Air Max Pulse",
+    "quantity" : 2,
+    "price" : 12000
+  }, {
+    "name" : "Columbia Alpine Jacket",
+    "quantity" : 1,
+    "price" : 25000
+  } ],
+  "createdAt" : 1795698180.607808000,
+  "updatedAt" : 1795698180.607809000,
+  "effectiveAmount" : 49000.0,
+  "productsSummary" : "Nike Air Max Pulse, Columbia Alpine Jacket",
+  "_id" : "a5dedcd1967d4870ae05522a4886529f"
+}, {
+  "userId" : "guest_user",
+  "email" : "e2e_user_1795700003457@omnicart.test",
+  "amount" : 400000,
+  "status" : "success",
+  "products" : [ {
+    "name" : "Pipeline Runner",
+    "quantity" : 2,
+    "price" : 200000
+  } ],
+  "createdAt" : 1795700004.725188000,
+  "updatedAt" : 1795700004.725191000,
+  "effectiveAmount" : 4000.0,
+  "productsSummary" : "Pipeline Runner",
+  "_id" : "0255813ed78543f69be1141b1f2f1f4e"
+}, {
+  "userId" : "guest_user",
+  "email" : "e2e_user_1795700018548@omnicart.test",
+  "amount" : 400000,
+  "status" : "success",
+  "products" : [ {
+    "name" : "Pipeline Runner",
+    "quantity" : 2,
+    "price" : 200000
+  } ],
+  "createdAt" : 1795700018.804198000,
+  "updatedAt" : 1795700018.804199000,
+  "effectiveAmount" : 4000.0,
+  "productsSummary" : "Pipeline Runner",
+  "_id" : "a3151d57e1cb4f91975daaa722061270"
 }, {
   "userId" : "user_priya",
   "email" : "priya@example.com",

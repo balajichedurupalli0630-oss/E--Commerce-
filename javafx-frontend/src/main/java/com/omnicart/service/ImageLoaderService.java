@@ -2,6 +2,7 @@ package com.omnicart.service;
 
 import javafx.scene.image.Image;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,9 +20,17 @@ public class ImageLoaderService {
         }
 
         try {
-            // Check HTTP / HTTPS
-            if (path.startsWith("http://") || path.startsWith("https://")) {
+            // Check HTTP / HTTPS / file: protocol
+            if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("file:")) {
                 Image img = new Image(path, true);
+                CACHE.put(path, img);
+                return img;
+            }
+
+            // Check if it's a local filesystem file
+            File localFile = new File(path);
+            if (localFile.exists() && localFile.isFile()) {
+                Image img = new Image(localFile.toURI().toString());
                 CACHE.put(path, img);
                 return img;
             }

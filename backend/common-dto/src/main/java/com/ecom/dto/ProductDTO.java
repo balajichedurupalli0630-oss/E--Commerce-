@@ -9,7 +9,7 @@ public class ProductDTO {
     private String name;
     private String shortDescription;
     private String description;
-    private Integer price;
+    private Double price;
     private List<String> sizes;
     private List<String> colors;
     private Map<String, String> images;
@@ -23,7 +23,7 @@ public class ProductDTO {
 
     public ProductDTO() {}
 
-    public ProductDTO(Long id, String name, String shortDescription, String description, Integer price,
+    public ProductDTO(Long id, String name, String shortDescription, String description, Double price,
                       List<String> sizes, List<String> colors, Map<String, String> images,
                       String categorySlug, CategoryDTO category, Double costPrice, Integer stockQuantity,
                       Integer leadTimeDays, Instant createdAt, Instant updatedAt) {
@@ -43,8 +43,8 @@ public class ProductDTO {
         public Builder name(String name) { dto.name = name; return this; }
         public Builder shortDescription(String shortDescription) { dto.shortDescription = shortDescription; return this; }
         public Builder description(String description) { dto.description = description; return this; }
-        public Builder price(Integer price) { dto.price = price; return this; }
-        public Builder price(Double price) { dto.price = price != null ? price.intValue() : null; return this; }
+        public Builder price(Double price) { dto.price = price; return this; }
+        public Builder price(Integer price) { dto.price = price != null ? price.doubleValue() : null; return this; }
         public Builder sizes(List<String> sizes) { dto.sizes = sizes; return this; }
         public Builder colors(List<String> colors) { dto.colors = colors; return this; }
         public Builder images(Map<String, String> images) { dto.images = images; return this; }
@@ -67,9 +67,8 @@ public class ProductDTO {
     public void setShortDescription(String shortDescription) { this.shortDescription = shortDescription; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public Integer getPrice() { return price; }
-    public void setPrice(Integer price) { this.price = price; }
-    public void setPrice(Double price) { this.price = price != null ? price.intValue() : null; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
     public List<String> getSizes() { return sizes; }
     public void setSizes(List<String> sizes) { this.sizes = sizes; }
     public List<String> getColors() { return colors; }

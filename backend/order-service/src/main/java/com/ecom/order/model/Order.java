@@ -1,6 +1,7 @@
 package com.ecom.order.model;
 
 import com.ecom.dto.OrderItemDTO;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -31,9 +32,9 @@ public class Order {
     @Column(name = "status", length = 50)
     private String status;
 
-    @Convert(converter = OrderItemsConverter.class)
-    @Column(name = "products", columnDefinition = "TEXT")
-    private List<OrderItemDTO> products = new ArrayList<>();
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<OrderItem> items = new ArrayList<>();
 
     @Column(name = "created_at")
     private Instant createdAt;
@@ -54,14 +55,50 @@ public class Order {
         if (this.updatedAt == null) {
             this.updatedAt = Instant.now();
         }
-        if (this.products == null) {
-            this.products = new ArrayList<>();
+        if (this.items == null) {
+            this.items = new ArrayList<>();
+        }
+        for (OrderItem item : this.items) {
+            item.setOrder(this);
         }
     }
 
     @PreUpdate
     public void onPreUpdate() {
         this.updatedAt = Instant.now();
+    }
+
+    public void addItem(OrderItem item) {
+        if (this.items == null) this.items = new ArrayList<>();
+        this.items.add(item);
+        item.setOrder(this);
+    }
+
+    public List<OrderItemDTO> getProducts() {
+        if (items != null && !items.isEmpty()) {
+            return items.stream()
+                    .map(i -> new OrderItemDTO(i.getProductId(), i.getName(), i.getQuantity(), i.getPrice()))
+                    .toList();
+        }
+        return new ArrayList<>();
+    }
+
+    public void setProducts(List<OrderItemDTO> dtoList) {
+        if (this.items == null) {
+            this.items = new ArrayList<>();
+        } else {
+            this.items.clear();
+        }
+        if (dtoList != null) {
+            for (OrderItemDTO dto : dtoList) {
+                addItem(OrderItem.builder()
+                        .productId(dto.productId())
+                        .name(dto.name())
+                        .quantity(dto.quantity())
+                        .price(dto.price())
+                        .build());
+            }
+        }
     }
 
     public static Builder builder() { return new Builder(); }
@@ -73,6 +110,7 @@ public class Order {
         private Integer amount;
         private String status;
         private List<OrderItemDTO> products = new ArrayList<>();
+        private List<OrderItem> items = new ArrayList<>();
         private Instant createdAt;
         private Instant updatedAt;
 
@@ -82,6 +120,7 @@ public class Order {
         public Builder amount(Integer amount) { this.amount = amount; return this; }
         public Builder status(String status) { this.status = status; return this; }
         public Builder products(List<OrderItemDTO> products) { this.products = products; return this; }
+        public Builder items(List<OrderItem> items) { this.items = items; return this; }
         public Builder createdAt(Instant createdAt) { this.createdAt = createdAt; return this; }
         public Builder updatedAt(Instant updatedAt) { this.updatedAt = updatedAt; return this; }
 
@@ -92,9 +131,15 @@ public class Order {
             order.email = this.email;
             order.amount = this.amount;
             order.status = this.status;
-            order.products = this.products != null ? this.products : new ArrayList<>();
             order.createdAt = this.createdAt;
             order.updatedAt = this.updatedAt;
+            if (this.items != null && !this.items.isEmpty()) {
+                for (OrderItem it : this.items) {
+                    order.addItem(it);
+                }
+            } else if (this.products != null && !this.products.isEmpty()) {
+                order.setProducts(this.products);
+            }
             return order;
         }
     }
@@ -109,8 +154,8 @@ public class Order {
     public void setAmount(Integer amount) { this.amount = amount; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
-    public List<OrderItemDTO> getProducts() { return products; }
-    public void setProducts(List<OrderItemDTO> products) { this.products = products; }
+    public List<OrderItem> getItems() { return items; }
+    public void setItems(List<OrderItem> items) { this.items = items; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }

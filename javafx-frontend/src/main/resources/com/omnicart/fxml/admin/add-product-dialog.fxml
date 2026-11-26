@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.omnicart.controller.admin.AddProductDialogController"
-      prefWidth="520" prefHeight="650" spacing="16" style="-fx-background-color: #ffffff; -fx-padding: 24px;">
+      prefWidth="540" prefHeight="700" spacing="16" style="-fx-background-color: #ffffff; -fx-padding: 24px;">
 
     <Label text="Add New Product" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
 
@@ -24,6 +25,28 @@
             <VBox spacing="4">
                 <Label text="Full Description" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
                 <TextArea fx:id="descField" promptText="Detailed specifications and material..." prefRowCount="3"/>
+            </VBox>
+
+            <VBox spacing="6">
+                <Label text="Product Image *" style="-fx-font-size: 12px; -fx-font-weight: 600; -fx-text-fill: #475569;"/>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <TextField fx:id="imageField" promptText="/products/1g.png or http://... or select file" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="browseImageBtn" text="Browse..." onAction="#onBrowseImage" styleClass="btn-secondary-outline"/>
+                </HBox>
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <StackPane style="-fx-border-color: #cbd5e1; -fx-border-radius: 6px; -fx-background-color: #f8fafc; -fx-padding: 4px; -fx-min-width: 68px; -fx-min-height: 68px; -fx-max-width: 68px; -fx-max-height: 68px;" alignment="CENTER">
+                        <ImageView fx:id="imagePreview" fitHeight="60" fitWidth="60" preserveRatio="true"/>
+                    </StackPane>
+                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                        <Label text="Accepted: PNG, JPG, JPEG, WEBP or web image URL." style="-fx-font-size: 11px; -fx-text-fill: #64748b;"/>
+                        <HBox spacing="6" alignment="CENTER_LEFT">
+                            <Label text="Samples:" style="-fx-font-size: 11px; -fx-text-fill: #64748b; -fx-font-weight: 600;"/>
+                            <Button text="1g.png" onAction="#onSelectSample1" style="-fx-font-size: 10px; -fx-padding: 2px 6px; -fx-cursor: hand;"/>
+                            <Button text="2g.png" onAction="#onSelectSample2" style="-fx-font-size: 10px; -fx-padding: 2px 6px; -fx-cursor: hand;"/>
+                            <Button text="8b.png" onAction="#onSelectSample3" style="-fx-font-size: 10px; -fx-padding: 2px 6px; -fx-cursor: hand;"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
             </VBox>
 
             <HBox spacing="16">

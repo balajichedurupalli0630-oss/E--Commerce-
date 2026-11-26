@@ -138,7 +138,7 @@ public class ProductService {
                 .name(product.getName())
                 .shortDescription(product.getShortDescription())
                 .description(product.getDescription())
-                .price(product.getPrice() != null ? product.getPrice().intValue() : null)
+                .price(product.getPrice())
                 .costPrice(product.getCostPrice())
                 .stockQuantity(product.getStockQuantity())
                 .leadTimeDays(product.getLeadTimeDays())

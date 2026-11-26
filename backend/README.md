@@ -10,7 +10,7 @@ A resilient, event-driven microservices backend built with **Java 21 LTS**, **Sp
 | :--- | :--- | :--- | :--- |
 | **`common-dto`** | Library | - | Immutable Java 21 `record` classes (`ProductDTO`, `OrderItemDTO`, `UserDTO`) and Kafka event contracts |
 | **`product-service`** | `http://localhost:8000` | PostgreSQL (`productdb`) | Product & Category CRUD, dynamic shoe/clothing size associations, Bayesian Gamma-Poisson stochastic demand forecasting |
-| **`order-service`** | `http://localhost:8001` | PostgreSQL (`orderdb`) | JPA order repository, `OrderItemsConverter` for JSON line items, Kafka consumer for `payment.successful`, order cancellation |
+| **`order-service`** | `http://localhost:8001` | PostgreSQL (`orderdb`) | JPA order repository, normalized `orders` & `order_items` (3NF), Kafka consumer for `payment.successful`, order cancellation |
 | **`payment-service`** | `http://localhost:8002` | In-Memory / Stateless | Native mock checkout session creation, status retrieval, Kafka publisher for `payment.successful` (Zero Stripe dependency) |
 | **`auth-service`** | `http://localhost:8003` | PostgreSQL (`authdb`) | Native BCrypt password hashing, stateless JWT issuance (`/auth/login`), registration (`/auth/register`), profile validation (`/auth/me`) |
 | **`email-service`** | Worker | - | Asynchronous Kafka consumer for `order.created` and `user.created`, order receipt & welcome dispatching |
